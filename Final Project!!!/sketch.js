@@ -35,7 +35,6 @@ function setup() {
   
     grid = placemine(GRIDSIZE);  //grid for which square has mine
 
-    mineMap = showMap(GRIDSIZE); // grid for how many mines are closeby
   
   }
 }
@@ -44,7 +43,7 @@ function setup() {
 function draw() {
   background(220);
   displayGrid();
-  gameover();
+  // gameover();
  
 }
 
@@ -58,9 +57,9 @@ function mousePressed() {
       digBomb(spaceX ,spaceY);
     }
   
-    if (mouseButton === RIGHT){
-      flagBomb(spaceX , spaceY);
-    }
+  //   if (mouseButton === RIGHT){
+  //     flagBomb(spaceX , spaceY);
+  //   }
   }
   
 }
@@ -69,116 +68,111 @@ function mousePressed() {
 function digBomb(spaceX, spaceY) {
   if (spaceX >= 0 && spaceX < GRIDSIZE && spaceY >= 0 && spaceY < GRIDSIZE) {
     
-    if (grid[spaceY][spaceX] === "no mine" && grid[spaceY][spaceX] !== "flaged" ||grid[spaceY][spaceX] === "pressed" && grid[spaceY][spaceX] !== "flaged" ) {
-      grid[spaceY][spaceX] = "pressed";
+    if (grid[spaceY][spaceX].isMine === false && grid[spaceY][spaceX].flag === false && grid[spaceY][spaceX].status === "Not Clicked"){
+      grid[spaceY][spaceX].status = "pressed";
 
     }
     
-    else if ( grid[spaceY][spaceX] === "mine" ||grid[spaceY][spaceX] === "blow up ") {
-      grid[spaceY][spaceX] = "blow up";
+    else if ( grid[spaceY][spaceX].isMine === true && grid[spaceY][spaceX].status === "Not Clicked" && grid[spaceY][spaceX].flag === false) {
+      grid[spaceY][spaceX].status = "blow up";
     }
   }
 }
 
-//when right mouse is clicked, sends signal that this square should be flagged
-function flagBomb(spaceX, spaceY) {
-  if (spaceX >= 0 && spaceX < GRIDSIZE && spaceY >= 0 && spaceY < GRIDSIZE) {
+// //when right mouse is clicked, sends signal that this square should be flagged
+// function flagBomb(spaceX, spaceY) {
+//   if (spaceX >= 0 && spaceX < GRIDSIZE && spaceY >= 0 && spaceY < GRIDSIZE) {
     
-    if (grid[spaceY][spaceX] !== "blow up" && grid[spaceY][spaceX] !== "pressed" && grid[spaceY][spaceX] !== "no mineflaged" && grid[spaceY][spaceX] !== "mineflaged" ) {
+//     if (grid[spaceY][spaceX] !== "blow up" && grid[spaceY][spaceX] !== "pressed" && grid[spaceY][spaceX] !== "no mineflaged" && grid[spaceY][spaceX] !== "mineflaged" ) {
      
-      if (grid[spaceY][spaceX] === "mine"){
-        grid[spaceY][spaceX] ="mineflaged";
-      }
+//       if (grid[spaceY][spaceX] === "mine"){
+//         grid[spaceY][spaceX] ="mineflaged";
+//       }
       
-      else if (grid[spaceY][spaceX] === "no mine"){
-        grid[spaceY][spaceX] ="no mineflaged";
-      }
-    }
+//       else if (grid[spaceY][spaceX] === "no mine"){
+//         grid[spaceY][spaceX] ="no mineflaged";
+//       }
+//     }
     
-    else if (grid[spaceY][spaceX] === "mine" || grid[spaceY][spaceX] === "no mine" || grid[spaceY][spaceX] === "no mineflaged" || grid[spaceY][spaceX] === "mineflaged"  ){
+//     else if (grid[spaceY][spaceX] === "mine" || grid[spaceY][spaceX] === "no mine" || grid[spaceY][spaceX] === "no mineflaged" || grid[spaceY][spaceX] === "mineflaged"  ){
       
-      if (grid[spaceY][spaceX] === "mineflaged"){
-        grid[spaceY][spaceX] ="mine";
-      }
+//       if (grid[spaceY][spaceX] === "mineflaged"){
+//         grid[spaceY][spaceX] ="mine";
+//       }
      
-      else if (grid[spaceY][spaceX] === "no mineflaged"){
-        grid[spaceY][spaceX] ="no mine";
-      }
-    }
-  }
+//       else if (grid[spaceY][spaceX] === "no mineflaged"){
+//         grid[spaceY][spaceX] ="no mine";
+//       }
+//     }
+//   }
   
-}
+// }
 
 
 // select which square is a mine at random 
 function placemine(){
   let grid = [];
   let chanceOfHavingMine = 30; //set the chance of having a mine
-  for (let i=0; i<GRIDSIZE; i++) {
+  for (let y=0; y<GRIDSIZE; y++) {
     grid.push([]);
-    for (let j=0; j<GRIDSIZE; j++) {
+    for (let x=0; x<GRIDSIZE; x++) {
       
       if (random(100) < chanceOfHavingMine) {
-        grid[i].push("mine");
+        grid[y].push(new Square(true));
       }
-
       else {
-        grid[i].push("no mine");
+        grid[y].push(new Square(false));
         
       }
     }
   }
-  return grid;
-  
+  return grid;  
 }
 
 
-// determine how many mines are closeby
-function showMap(){
-  let  mineMap = [];
-  for (let y=0; y<GRIDSIZE; y++) {
-    mineMap.push([]);
-    for (let x=0; x<GRIDSIZE; x++) {
+// // determine how many mines are closeby
+// function showMap(){
+//   for (let y=0; y<GRIDSIZE; y++) {
+//     mineMap.push([]);
+//     for (let x=0; x<GRIDSIZE; x++) {
       
-      let closeMine = 0;
+//       let closeMine = 0;
       
-      if (x>= 0 && x< GRIDSIZE && y - 1>= 0 && y + 1  < GRIDSIZE) {
-        for(let i=-1;i<=1;i++){
-          for (let j=-1;j<=1;j++){
-            if (grid[y+i][x+j] === "mine"){
-              closeMine = closeMine+1;
-            }
-          }  
-        }
-        mineMap[y].push(closeMine);
-      }
+//       if (x>= 0 && x< GRIDSIZE && y - 1>= 0 && y + 1  < GRIDSIZE) {
+//         for(let i=-1;i<=1;i++){
+//           for (let j=-1;j<=1;j++){
+//             if (grid[y+i][x+j] === "mine"){
+//               closeMine = closeMine+1;
+//             }
+//           }  
+//         }
+//         grid[y][x].closeMine = closeMine;
+//       }
       
-      else if (x>= 0 && x < GRIDSIZE && y + 1> 0 && y + 1  < GRIDSIZE) {
-        for(let i=0;i<=1;i++){
-          for (let j=-1;j<=1;j++){
-            if (grid[y+i][x+j] === "mine"){
-              closeMine = closeMine+1;
-            }
-          }  
-        }
-        mineMap[y].push(closeMine);
-      }
+//       else if (x>= 0 && x < GRIDSIZE && y + 1> 0 && y + 1  < GRIDSIZE) {
+//         for(let i=0;i<=1;i++){
+//           for (let j=-1;j<=1;j++){
+//             if (grid[y+i][x+j] === "mine"){
+//               closeMine = closeMine+1;
+//             }
+//           }  
+//         }
+//         grid[y][x].closeMine = closeMine;
+//       }
       
-      else{
-        for(let i=-1;i<=0;i++){
-          for (let j=-1;j<=1;j++){
-            if (grid[y+i][x+j] === "mine"){
-              closeMine = closeMine+1;
-            }
-          }
-        }
-        mineMap[y].push(closeMine);
-      } 
-    }
-  }
-  
-  return mineMap;
-}
+//       else{
+//         for(let i=-1;i<=0;i++){
+//           for (let j=-1;j<=1;j++){
+//             if (grid[y+i][x+j] === "mine"){
+//               closeMine = closeMine+1;
+//             }
+//           }
+//         }
+//         grid[y][x].closeMine = closeMine;
+//       } 
+//     }
+//   }
+// }
 
 
 //"signal Center of the Grid" Control all color on grid
@@ -190,23 +184,23 @@ function displayGrid() {
       strokeWeight(1);
       
       // when square is safe show number - how many mine are closeby
-      if (grid[y][x] === "pressed"){
+      if (grid[y][x].status === "pressed"){
         fill("white");
         rect(x*cellSize + windowWidth/2 - cellSize*(GRIDSIZE/2), y*cellSize+ windowHeight/2 - cellSize*(GRIDSIZE/2), cellSize, cellSize);
         fill("black");
         textSize(cellSize * 0.8);
         textAlign(CENTER, CENTER);
-        text(mineMap[y][x],x*cellSize + windowWidth/2 - cellSize*(GRIDSIZE/2) +cellSize/2, y*cellSize+ windowHeight/2 - cellSize*(GRIDSIZE/2) + cellSize/2);
+        text(grid[y][x].closeMine,x*cellSize + windowWidth/2 - cellSize*(GRIDSIZE/2) +cellSize/2, y*cellSize+ windowHeight/2 - cellSize*(GRIDSIZE/2) + cellSize/2);
       }
       
       // determine which square should be orange (flag)
-      else if (grid[y][x] === "mineflaged" || grid[y][x] === "no mineflaged"){
+      else if (grid[y][x].status === "NotClicked" && grid[y][x].flag === true ){
         fill("orange");
         rect(x*cellSize + windowWidth/2 - cellSize*(GRIDSIZE/2), y*cellSize+ windowHeight/2 - cellSize*(GRIDSIZE/2), cellSize, cellSize);
       }
       
       // change square to red if bomb
-      else if (grid[y][x] === "blow up"){
+      else if (grid[y][x].status === "blow up"){
         fill("red");
         rect(x*cellSize + windowWidth/2 - cellSize*(GRIDSIZE/2), y*cellSize+ windowHeight/2 - cellSize*(GRIDSIZE/2), cellSize, cellSize);
         state ="blowAllMine";
@@ -225,17 +219,26 @@ function displayGrid() {
 
 
 
-// if bomb is pressed, find all other bomb automactically and explode them
-function gameover(){
-  if (state === "blowAllMine"){
-    for (let i = 0; i<GRIDSIZE; i++) {
-      for (let j= 0; j<GRIDSIZE; j++) {
-        if( grid[j][i] === "mine" ||grid[j][i] === "mineflaged" ){
-          fill("red");
-          rect(i*cellSize + windowWidth/2 - cellSize*(GRIDSIZE/2), j*cellSize+ windowHeight/2 - cellSize*(GRIDSIZE/2), cellSize, cellSize);
-        }
-      }
-    }
+// // if bomb is pressed, find all other bomb automactically and explode them
+// function gameover(){
+//   if (state === "blowAllMine"){
+//     for (let i = 0; i<GRIDSIZE; i++) {
+//       for (let j= 0; j<GRIDSIZE; j++) {
+//         if( grid[j][i] === "mine" ||grid[j][i] === "mineflaged" ){
+//           fill("red");
+//           rect(i*cellSize + windowWidth/2 - cellSize*(GRIDSIZE/2), j*cellSize+ windowHeight/2 - cellSize*(GRIDSIZE/2), cellSize, cellSize);
+//         }
+//       }
+//     }
 
+//   }
+// }
+
+class Square{
+  constructor (isMine){
+    this.isMine = isMine;
+    this.closeMine;
+    this.status = "Not Clicked";
+    this.flag = false;
   }
 }

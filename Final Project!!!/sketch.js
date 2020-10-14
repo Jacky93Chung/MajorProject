@@ -20,68 +20,42 @@ function setup() {
 
   if (state === "easy"){ // shows a 9x9 grid
     GRIDSIZE = 3; 
-    document.addEventListener("contextmenu", event => event.preventDefault());
-  
-    // determine his height or width is larger
-    if (width < height) {
-      cellSize = width / GRIDSIZE;
-    }
-    else {
-      cellSize = height/ GRIDSIZE - 10 ;
-    }
-
-  
-  
-    grid = placemine(GRIDSIZE);  //grid for which square has mine
-
-    
   }
   if (state === "medium"){ // shows a 9x9 grid
     GRIDSIZE = 9; 
-    document.addEventListener("contextmenu", event => event.preventDefault());
-  
-    // determine his height or width is larger
-    if (width < height) {
-      cellSize = width / GRIDSIZE;
-    }
-    else {
-      cellSize = height/ GRIDSIZE - 10 ;
-    }
 
-  
-  
-    grid = placemine(GRIDSIZE);  //grid for which square has mine
-
-    
   }
   if  (state === "hard"){ // shows a 9x9 grid
     GRIDSIZE = 12; 
-    document.addEventListener("contextmenu", event => event.preventDefault());
+  }
+  document.addEventListener("contextmenu", event => event.preventDefault());
   
-    // determine his height or width is larger
-    if (width < height) {
-      cellSize = width / GRIDSIZE;
-    }
-    else {
-      cellSize = height/ GRIDSIZE - 10 ;
-    }
+  // determine his height or width is larger
+  if (width < height) {
+    cellSize = width / GRIDSIZE;
+  }
+  else {
+    cellSize = height/ GRIDSIZE - 10 ;
+  }
 
   
   
-    grid = placemine(GRIDSIZE);  //grid for which square has mine
+  grid = placemine(GRIDSIZE);  //grid for which square has mine
 
     
-  }
+  
 }
+
 
 //shows functions on the page
 function draw() {
   background(220);
-
-  showMap();
-  displayGrid();
   
-  gameover();
+  if (state ==="easy"|| state === "medium" || state === "hard" || state === "blowAllMine"){
+    showMap();
+    displayGrid();
+    gameover();
+  }
  
 }
 
@@ -102,6 +76,7 @@ function mousePressed() {
   }
   
 }
+
 
 //when left mouse is clicked, send signal that player decides to dig this square
 function digBomb(spaceX, spaceY) {

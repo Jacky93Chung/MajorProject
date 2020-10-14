@@ -11,16 +11,51 @@ let GRIDSIZE; // length x width of the grid
 let cellSize; //size of each little square
 let grid;  // the grid
 
-let state ="start9Grid"; 
+let state ="medium"; 
 
 
 // sets up the game
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
- 
-  if (state === "start9Grid"){ // shows a 9x9 grid
+  if (state === "easy"){ // shows a 9x9 grid
+    GRIDSIZE = 3; 
+    document.addEventListener("contextmenu", event => event.preventDefault());
+  
+    // determine his height or width is larger
+    if (width < height) {
+      cellSize = width / GRIDSIZE;
+    }
+    else {
+      cellSize = height/ GRIDSIZE - 10 ;
+    }
+
+  
+  
+    grid = placemine(GRIDSIZE);  //grid for which square has mine
+
+    
+  }
+  if (state === "medium"){ // shows a 9x9 grid
     GRIDSIZE = 9; 
+    document.addEventListener("contextmenu", event => event.preventDefault());
+  
+    // determine his height or width is larger
+    if (width < height) {
+      cellSize = width / GRIDSIZE;
+    }
+    else {
+      cellSize = height/ GRIDSIZE - 10 ;
+    }
+
+  
+  
+    grid = placemine(GRIDSIZE);  //grid for which square has mine
+
+    
+  }
+  if  (state === "hard"){ // shows a 9x9 grid
+    GRIDSIZE = 12; 
     document.addEventListener("contextmenu", event => event.preventDefault());
   
     // determine his height or width is larger
@@ -42,6 +77,8 @@ function setup() {
 //shows functions on the page
 function draw() {
   background(220);
+
+  showMap();
   displayGrid();
   
   gameover();
@@ -126,46 +163,110 @@ function placemine(){
 
 // determine how many mines are closeby
 function showMap(){
-  for (let y = 0; y<GRIDSIZE; y++) {
-    for (let x= 0; x<GRIDSIZE; x++) {
-      let totalMine = 0;
+  let  mineMap = [];
+  for (let y=0; y<GRIDSIZE; y++) {
+    mineMap.push([]);
+    for (let x=0; x<GRIDSIZE; x++) {
       
+      let closeMine = 0;
       
-      if (x>= 0 && x< GRIDSIZE && y - 1>= 0 && y + 1  < GRIDSIZE) {
+      if (x > 0 && x < GRIDSIZE - 1 && y > 0 && y < GRIDSIZE - 1) {
         for(let i=-1;i<=1;i++){
-          for (let j=- 1;j<=1;j++){
-            if (grid[y+i][x+j].isMine === true ){
-              totalMine = totalMine+1;
-            }
-          }  
-        }
-        grid[y][x].closeMine = totalMine;
-      }
-      
-      else if (x>= 0 && x < GRIDSIZE && y + 1> 0 && y  + 1 < GRIDSIZE) {
-        for(let i=0;i<=1;i++){
-          for (let j=-1 ;j<=1;j++){
+          for (let j=-1;j<=1;j++){
             if (grid[y+i][x+j].isMine === true){
-              totalMine = totalMine+1;
+              closeMine = closeMine+1;
             }
           }  
         }
-        grid[y][x].closeMine = totalMine;
+        grid[y][x].closeMine = closeMine;
       }
-      
-      else{
+      else if (x === 0 && y === 0) {
+        for(let i=0;i<=1;i++){
+          for (let j=0;j<=1;j++){
+            if (grid[y+i][x+j].isMine === true){
+              closeMine = closeMine+1;
+            }
+          }  
+        }
+        grid[y][x].closeMine = closeMine;
+      }
+      else if (x === 0 && y === GRIDSIZE - 1) {
+        for(let i= -1 ;i<=0;i++){
+          for (let j=0;j<=1;j++){
+            if (grid[y+i][x+j].isMine === true){
+              closeMine = closeMine+1;
+            }
+          }  
+        }
+        grid[y][x].closeMine = closeMine;
+      }
+      else if (x === GRIDSIZE - 1  && y === 0) {
+        for(let i=0;i<=1;i++){
+          for (let j=-1;j<=0;j++){
+            if (grid[y+i][x+j].isMine === true){
+              closeMine = closeMine+1;
+            }
+          }  
+        }
+        grid[y][x].closeMine = closeMine;
+      }
+      else if (x === GRIDSIZE - 1 && y=== GRIDSIZE - 1) {
+        for(let i=-1;i<=0;i++){
+          for (let j=-1;j<=0;j++){
+            if (grid[y+i][x+j].isMine === true){
+              closeMine = closeMine+1;
+            }
+          }  
+        }
+        grid[y][x].closeMine = closeMine;
+      }
+
+      else if (x > 0 && x < GRIDSIZE - 1 && y === 0) {
+        for(let i=0;i<=1;i++){
+          for (let j=-1;j<=1;j++){
+            if (grid[y+i][x+j].isMine === true){
+              closeMine = closeMine+1;
+            }
+          }  
+        }
+        grid[y][x].closeMine = closeMine;
+      }
+      else if (x > 0 && x < GRIDSIZE - 1 && y === GRIDSIZE - 1) {
         for(let i=-1;i<=0;i++){
           for (let j=-1;j<=1;j++){
-            if (grid[y+i][x+j].isMine === true ){
-              totalMine = totalMine+1;
+            if (grid[y+i][x+j].isMine === true){
+              closeMine = closeMine+1;
             }
-          }
+          }  
         }
-        grid[y][x].closeMine = totalMine;
-      } 
+        grid[y][x].closeMine = closeMine;
+      }
+      else if (x === 0 && y > 0 && y < GRIDSIZE - 1) {
+        for(let i=-1;i<=1;i++){
+          for (let j=0;j<=1;j++){
+            if (grid[y+i][x+j].isMine === true){
+              closeMine = closeMine+1;
+            }
+          }  
+        }
+        grid[y][x].closeMine = closeMine;
+      }
+      else if (x === GRIDSIZE - 1 && y > 0 && y < GRIDSIZE - 1) {
+        for(let i=-1;i<=1;i++){
+          for (let j= -1 ;j<=0;j++){
+            if (grid[y+i][x+j].isMine === true){
+              closeMine = closeMine+1;
+            }
+          }  
+        }
+        grid[y][x].closeMine = closeMine;
+      }
+      
     }
   }
 }
+
+  
 
 
  

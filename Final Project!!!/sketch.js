@@ -11,7 +11,7 @@ let GRIDSIZE; // length x width of the grid
 let cellSize; //size of each little square
 let grid;  // the grid
 
-let state ="medium"; 
+let state ="mainMenu"; 
 
 
 // sets up the game
@@ -50,13 +50,22 @@ function setup() {
 //shows functions on the page
 function draw() {
   background(220);
-  
+  if (state === "mainMenu"){
+    userChooseLevel();
+  }
+  checkWin();
   if (state ==="easy"|| state === "medium" || state === "hard" || state === "blowAllMine"){
     showMap();
     displayGrid();
     gameover();
   }
  
+}
+
+function userChooseLevel() {
+  rect(width/3/2 - 100 ,height/1.7 ,200,50);
+  rect(width*2/3 - width/3/2 - 100,height/1.7 ,200,50);
+  rect(width - width/3/2 - 100, height/1.7 ,200,50);
 }
 
 // determine which side of the mouse is clicked
@@ -138,9 +147,8 @@ function placemine(){
 
 // determine how many mines are closeby
 function showMap(){
-  let  mineMap = [];
+
   for (let y=0; y<GRIDSIZE; y++) {
-    mineMap.push([]);
     for (let x=0; x<GRIDSIZE; x++) {
       
       let closeMine = 0;
@@ -289,6 +297,29 @@ function displayGrid() {
   }
 }
 
+function checkWin(){
+  if (state === "easy"||state === "medium"||state === "hard"){
+
+    let gameOver = 0;
+    let mineTotal = 0;
+
+    for (let y = 0; y<GRIDSIZE; y++) {
+      for (let x= 0; x<GRIDSIZE; x++) {
+
+        if (grid[y][x].isMine === true){
+          mineTotal = mineTotal +1;
+        }
+
+        if(grid[y][x].status !== "Not Clicked"){
+          gameOver = gameOver + 1;
+        }
+      }
+    }
+    if (gameOver === GRIDSIZE * GRIDSIZE - mineTotal){
+      state = "userWin";
+    }
+  }
+}
 
 
 // if bomb is pressed, find all other bomb automactically and explode them
@@ -302,7 +333,6 @@ function gameover(){
         }
       }
     }
-
   }
 }
 

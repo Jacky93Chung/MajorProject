@@ -66,6 +66,16 @@ function userChooseLevel() {
   rect(width/3/2 - 100 ,height/1.7 ,200,50);
   rect(width*2/3 - width/3/2 - 100,height/1.7 ,200,50);
   rect(width - width/3/2 - 100, height/1.7 ,200,50);
+  if (mouseX > width/3/2 - 100 && mouseX < width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50 ){
+    rect(width/3/2 - 120 ,height/1.7 - 20  ,240,90);
+    
+  }
+  if (mouseX > width*2/3 - width/3/2 - 100 && mouseX < width*2/3 - width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50 ){
+    rect(width*2/3 - width/3/2 - 120 ,height/1.7 - 20  ,240,90);
+  }
+  if (mouseX > width - width/3/2 - 100 && mouseX < width - width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50 ){
+    rect(width - width/3/2 - 120 ,height/1.7 - 20  ,240,90);
+  }
 }
 
 // determine which side of the mouse is clicked

@@ -17,6 +17,7 @@ let state ="mainMenu";
 // sets up the game
 function setup() {
   createCanvas(windowWidth, windowHeight); 
+  document.addEventListener("contextmenu", event => event.preventDefault());
 }
 
 //shows functions on the page
@@ -36,18 +37,48 @@ function draw() {
 
 function userChooseLevel() {
 
+  //Easy Button
   rect(width/3/2 - 100 ,height/1.7 ,200,50);
+  textSize(25);
+  textAlign(CENTER, CENTER);
+  text("Easy",width/3/2 - 100,height/1.7 ,200,50);
+
+  //Medium Button
   rect(width*2/3 - width/3/2 - 100,height/1.7 ,200,50);
+  textSize(25);
+  textAlign(CENTER, CENTER);
+  text("Medium",width*2/3 - width/3/2 - 100,height/1.7 ,200,50);
+
+  //Hard Button
   rect(width - width/3/2 - 100, height/1.7 ,200,50);
+  textSize(25);
+  textAlign(CENTER, CENTER);
+  text("Hard",width - width/3/2 - 100, height/1.7 ,200,50);
+
+  //Easy Pop-up Button
   if (mouseX > width/3/2 - 100 && mouseX < width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50 ){
     rect(width/3/2 - 120 ,height/1.7 - 20  ,240,90);
+    textSize(35);
+    textAlign(CENTER, CENTER);
+    text("Easy",width/3/2 - 120,height/1.7 - 20,240,90);
     
   }
+
+  //Medium Pop-up Button
   if (mouseX > width*2/3 - width/3/2 - 100 && mouseX < width*2/3 - width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50 ){
     rect(width*2/3 - width/3/2 - 120 ,height/1.7 - 20  ,240,90);
+    textSize(35);
+    textAlign(CENTER, CENTER);
+    text("Medium",width*2/3 - width/3/2 - 120 ,height/1.7 - 20  ,240,90);
+    
   }
+
+  //Hard Pop-up Button
   if (mouseX > width - width/3/2 - 100 && mouseX < width - width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50 ){
     rect(width - width/3/2 - 120 ,height/1.7 - 20  ,240,90);
+    textSize(35);
+    textAlign(CENTER, CENTER);
+    text("Hard",width - width/3/2 - 120 ,height/1.7 - 20  ,240,90);
   }
 }
 
@@ -65,7 +96,7 @@ function setUpGrid(){
     GRIDSIZE = 12; 
     chanceOfHavingMine = 30;
   }
-  document.addEventListener("contextmenu", event => event.preventDefault());
+  
   
   // determine his height or width is larger
   if (width < height) {

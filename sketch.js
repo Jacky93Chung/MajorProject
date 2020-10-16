@@ -28,10 +28,12 @@ function draw() {
   }
   if (state ==="easy"|| state === "medium" || state === "hard" || state === "blowAllMine"){
     setUpGrid();
-    displayGrid();
     showMap();
+    displayGrid();
     gameover();
   }
+
+
  
 }
 
@@ -126,7 +128,8 @@ function mousePressed() {
       state = "hard";  
     }
   }
-  if (state === "easy"||state ==="medium"||state ==="hard"){
+
+  else if (state === "easy"|| state ==="medium"|| state ==="hard"){
     if (mouseButton === LEFT){
       digBomb(spaceX,spaceY);
 
@@ -142,13 +145,13 @@ function mousePressed() {
 //when left mouse is clicked, send signal that player decides to dig this square
 function digBomb(spaceX, spaceY) {
   if (spaceX >= 0 && spaceX < GRIDSIZE && spaceY >= 0 && spaceY < GRIDSIZE) {
-    
+  
     if (grid[spaceY][spaceX].isMine === false && grid[spaceY][spaceX].flag === false && grid[spaceY][spaceX].status === "Not Clicked"){
       grid[spaceY][spaceX].status = "pressed";
 
     }
     
-    else if ( grid[spaceY][spaceX].isMine === true && grid[spaceY][spaceX].status === "Not Clicked" && grid[spaceY][spaceX].flag === false) {
+    else if (grid[spaceY][spaceX].isMine === true && grid[spaceY][spaceX].status === "Not Clicked" && grid[spaceY][spaceX].flag === false) {
       grid[spaceY][spaceX].status = "blow up";
     }
   }
@@ -189,9 +192,6 @@ function placemine(){
       }
     }
   }
-  
-
-
   return grid;  
 }
 
@@ -307,11 +307,11 @@ function showMap(){
 
 //"signal Center of the Grid" Control all color on grid
 function displayGrid() {
-  
-
   for (let y = 0; y<GRIDSIZE; y++) {
     for (let x= 0; x<GRIDSIZE; x++) {
+    
       strokeWeight(1);
+      
       
       // when square is safe show number - how many mine are closeby
       if (grid[y][x].status === "pressed"){
@@ -366,7 +366,28 @@ function checkWin(){
       }
     }
     if (gameOver === GRIDSIZE * GRIDSIZE - mineTotal){
-      state = "userWin";
+      //you win word
+      rect(width/2 -100,height/2 + 50,200,50);
+      textSize(25);
+      textAlign(CENTER, CENTER);
+      text("Try Again",width/2 -100,height/2 + 50,200,50);
+      if (mouseX > width/2 - 100 && mouseX < width/2 + 100 && mouseY < height/2 + 50 && mouseY < height/2 + 100){
+        rect(width/2 -120,height/2 + 30,240,90);
+        textSize(35);
+        textAlign(CENTER, CENTER);
+        text("Try Again",width/2 -120,height/2 + 30,240,90);
+      }
+
+      rect(width/2 -100,height/2 + 160,200,50);
+      textSize(25);
+      textAlign(CENTER, CENTER);
+      text("Main Menu",width/2 -100,height/2 + 160,200,50);
+      if (mouseX > width/2 - 100 && mouseX < width/2 + 100 && mouseY < height/2 + 160 && mouseY < height/2 + 210){
+        rect(width/2 -120,height/2 + 140,240,90);
+        textSize(35);
+        textAlign(CENTER, CENTER);
+        text("Main Menu",width/2 -120,height/2 + 140,240,90);
+      }
     }
   }
 }

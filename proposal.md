@@ -12,6 +12,7 @@ My project is MineSweeper - A classic window desktop game. In this project, I ho
         - Easy 
         - Medium
         - Hard
+    - Play Again Button
 
 - Grid is able to respond to different click commands from the Mouse 
     - Right Click = Place Flag
@@ -22,8 +23,6 @@ My project is MineSweeper - A classic window desktop game. In this project, I ho
 - Make the 2 2D-array into 1 with object
 
 - Detect user won when all non-mine squares are clicked
-
-- Play Again Button
 
 - A timer to caculate how long it takes user to finish
 

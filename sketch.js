@@ -10,42 +10,14 @@
 let GRIDSIZE; // length x width of the grid
 let cellSize; //size of each little square
 let grid;  // the grid
-
+let chanceOfHavingMine;  //set the chance of having a mine
 let state ="mainMenu"; 
 
 
 // sets up the game
 function setup() {
-  createCanvas(windowWidth, windowHeight);
-
-  if (state === "easy"){ // shows a 9x9 grid
-    GRIDSIZE = 3; 
-  }
-  if (state === "medium"){ // shows a 9x9 grid
-    GRIDSIZE = 9; 
-
-  }
-  if  (state === "hard"){ // shows a 9x9 grid
-    GRIDSIZE = 12; 
-  }
-  document.addEventListener("contextmenu", event => event.preventDefault());
-  
-  // determine his height or width is larger
-  if (width < height) {
-    cellSize = width / GRIDSIZE;
-  }
-  else {
-    cellSize = height/ GRIDSIZE - 10 ;
-  }
-
-  
-  
-  grid = placemine(GRIDSIZE);  //grid for which square has mine
-
-    
-  
+  createCanvas(windowWidth, windowHeight); 
 }
-
 
 //shows functions on the page
 function draw() {
@@ -53,16 +25,17 @@ function draw() {
   if (state === "mainMenu"){
     userChooseLevel();
   }
-  checkWin();
   if (state ==="easy"|| state === "medium" || state === "hard" || state === "blowAllMine"){
-    showMap();
+    setUpGrid();
     displayGrid();
+    showMap();
     gameover();
   }
  
 }
 
 function userChooseLevel() {
+
   rect(width/3/2 - 100 ,height/1.7 ,200,50);
   rect(width*2/3 - width/3/2 - 100,height/1.7 ,200,50);
   rect(width - width/3/2 - 100, height/1.7 ,200,50);
@@ -78,17 +51,55 @@ function userChooseLevel() {
   }
 }
 
+function setUpGrid(){
+  if (state === "easy"){ // shows a 3x3 grid
+    GRIDSIZE = 3; 
+    chanceOfHavingMine = 20;
+  }
+  if (state === "medium"){ // shows a 9x9 grid
+    GRIDSIZE = 9; 
+    chanceOfHavingMine = 25;
+
+  }
+  if  (state === "hard"){ // shows a 12x12 grid
+    GRIDSIZE = 12; 
+    chanceOfHavingMine = 30;
+  }
+  document.addEventListener("contextmenu", event => event.preventDefault());
+  
+  // determine his height or width is larger
+  if (width < height) {
+    cellSize = width / GRIDSIZE;
+  }
+  else {
+    cellSize = height/ GRIDSIZE - 10 ;
+  }
+  
+  grid = placemine(GRIDSIZE);  //grid for which square has mine
+}
+
+
 // determine which side of the mouse is clicked
 function mousePressed() {
   let spaceX = floor((mouseX - (width/2- cellSize*(GRIDSIZE/2)))/cellSize);
   let spaceY = floor((mouseY  - (height/2- cellSize*(GRIDSIZE/2)))/cellSize);
-
-  if (state !== "blowAllMine"){
+  
+  if(state === "mainMenu"){
+    if (mouseButton === LEFT && mouseX > width/3/2 - 100 && mouseX < width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50){
+      state = "easy";  
+    }
+    if (mouseButton === LEFT && mouseX > width*2/3 - width/3/2 - 100 && mouseX < width*2/3 - width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50 ){
+      state = "medium";  
+    }
+    if (mouseButton === LEFT && mouseX > width - width/3/2 - 100 && mouseX < width - width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50){
+      state = "hard";  
+    }
+  }
+  if (state === "easy"||state ==="medium"||state ==="hard"){
     if (mouseButton === LEFT){
-      digBomb(spaceX ,spaceY);
+      digBomb(spaceX,spaceY);
 
     }
-  
     else if (mouseButton === RIGHT){
       flagBomb(spaceX , spaceY);
     }
@@ -134,7 +145,6 @@ function flagBomb(spaceX, spaceY) {
 // select which square is a mine at random 
 function placemine(){
   let grid = [];
-  let chanceOfHavingMine = 30; //set the chance of having a mine
   for (let y=0; y<GRIDSIZE; y++) {
     grid.push([]);
     for (let x=0; x<GRIDSIZE; x++) {
@@ -157,7 +167,6 @@ function placemine(){
 
 // determine how many mines are closeby
 function showMap(){
-
   for (let y=0; y<GRIDSIZE; y++) {
     for (let x=0; x<GRIDSIZE; x++) {
       

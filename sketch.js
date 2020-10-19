@@ -6,7 +6,7 @@
 // right click on mouse
 // have 2 different 2d array grid
 
-
+let timesRun;
 let GRIDSIZE; // length x width of the grid
 let cellSize; //size of each little square
 let grid;  // the grid
@@ -26,11 +26,15 @@ function draw() {
   if (state === "mainMenu"){
     userChooseLevel();
   }
-  if (state ==="easy"|| state === "medium" || state === "hard" || state === "blowAllMine"){
+  if ((state ==="easy"|| state === "medium" || state === "hard" || state === "blowAllMine")){
+    if (timesRun === 0){
     setUpGrid();
     showMap();
+    }
     displayGrid();
     gameover();
+    checkWin();
+    timesRun = timesRun + 1;
   }
 
 
@@ -119,13 +123,16 @@ function mousePressed() {
   
   if(state === "mainMenu"){
     if (mouseButton === LEFT && mouseX > width/3/2 - 100 && mouseX < width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50){
-      state = "easy";  
+      state = "easy"; 
+      timesRun = 0;
     }
     if (mouseButton === LEFT && mouseX > width*2/3 - width/3/2 - 100 && mouseX < width*2/3 - width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50 ){
       state = "medium";  
+      timesRun = 0;
     }
     if (mouseButton === LEFT && mouseX > width - width/3/2 - 100 && mouseX < width - width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50){
       state = "hard";  
+      timesRun = 0;
     }
   }
 
@@ -367,27 +374,28 @@ function checkWin(){
     }
     if (gameOver === GRIDSIZE * GRIDSIZE - mineTotal){
       //you win word
+      
       rect(width/2 -100,height/2 + 50,200,50);
       textSize(25);
       textAlign(CENTER, CENTER);
-      text("Try Again",width/2 -100,height/2 + 50,200,50);
-      if (mouseX > width/2 - 100 && mouseX < width/2 + 100 && mouseY < height/2 + 50 && mouseY < height/2 + 100){
-        rect(width/2 -120,height/2 + 30,240,90);
-        textSize(35);
-        textAlign(CENTER, CENTER);
-        text("Try Again",width/2 -120,height/2 + 30,240,90);
-      }
+      text("Try Again", width/2 -100, height/2 + 50,200,50);
+      // if (mouseX > width/2 - 100 && mouseX < width/2 + 100 && mouseY < height/2 + 50 && mouseY < height/2 + 100){
+      //   rect(width/2 -120,height/2 + 30,240,90);
+      //   textSize(35);
+      //   textAlign(CENTER, CENTER);
+      //   text("Try Again",width/2 -120,height/2 + 30,240,90);
+      // }
 
-      rect(width/2 -100,height/2 + 160,200,50);
-      textSize(25);
-      textAlign(CENTER, CENTER);
-      text("Main Menu",width/2 -100,height/2 + 160,200,50);
-      if (mouseX > width/2 - 100 && mouseX < width/2 + 100 && mouseY < height/2 + 160 && mouseY < height/2 + 210){
-        rect(width/2 -120,height/2 + 140,240,90);
-        textSize(35);
-        textAlign(CENTER, CENTER);
-        text("Main Menu",width/2 -120,height/2 + 140,240,90);
-      }
+      // rect(width/2 -100,height/2 + 160,200,50);
+      // textSize(25);
+      // textAlign(CENTER, CENTER);
+      // text("Main Menu",width/2 -100,height/2 + 160,200,50);
+      // if (mouseX > width/2 - 100 && mouseX < width/2 + 100 && mouseY < height/2 + 160 && mouseY < height/2 + 210){
+      //   rect(width/2 -120,height/2 + 140,240,90);
+      //   textSize(35);
+      //   textAlign(CENTER, CENTER);
+      //   text("Main Menu",width/2 -120,height/2 + 140,240,90);
+      // }
     }
   }
 }

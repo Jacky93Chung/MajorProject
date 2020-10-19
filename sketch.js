@@ -12,7 +12,8 @@ let cellSize; //size of each little square
 let grid;  // the grid
 let chanceOfHavingMine;  //set the chance of having a mine
 let state ="mainMenu"; 
-
+let mode;
+let totalMine;
 
 // sets up the game
 function setup() {
@@ -26,10 +27,10 @@ function draw() {
   if (state === "mainMenu"){
     userChooseLevel();
   }
-  if ((state ==="easy"|| state === "medium" || state === "hard" || state === "blowAllMine")){
+  if (state ==="easy"|| state === "medium" || state === "hard" || state === "blowAllMine"){
     if (timesRun === 0){
-    setUpGrid();
-    showMap();
+      setUpGrid();
+      showMap();
     }
     displayGrid();
     gameover();
@@ -37,54 +38,102 @@ function draw() {
     timesRun = timesRun + 1;
   }
 
-
- 
+  if (state === "gameOver"){
+    EndGameButton();
+  }
 }
+
 
 function userChooseLevel() {
 
   //Easy Button
+  fill(255);
   rect(width/3/2 - 100 ,height/1.7 ,200,50);
+  fill(0);
   textSize(25);
   textAlign(CENTER, CENTER);
   text("Easy",width/3/2 - 100,height/1.7 ,200,50);
 
   //Medium Button
+  fill(255);
   rect(width*2/3 - width/3/2 - 100,height/1.7 ,200,50);
+  fill(0);
   textSize(25);
   textAlign(CENTER, CENTER);
   text("Medium",width*2/3 - width/3/2 - 100,height/1.7 ,200,50);
 
   //Hard Button
+  fill(255);
   rect(width - width/3/2 - 100, height/1.7 ,200,50);
+  fill(0);
   textSize(25);
   textAlign(CENTER, CENTER);
   text("Hard",width - width/3/2 - 100, height/1.7 ,200,50);
 
+
   //Easy Pop-up Button
   if (mouseX > width/3/2 - 100 && mouseX < width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50 ){
+    fill(255);
     rect(width/3/2 - 120 ,height/1.7 - 20  ,240,90);
+    fill(0);
     textSize(35);
     textAlign(CENTER, CENTER);
-    text("Easy",width/3/2 - 120,height/1.7 - 20,240,90);
-    
+    text("Easy",width/3/2 - 120,height/1.7 - 20,240,90); 
   }
 
   //Medium Pop-up Button
   if (mouseX > width*2/3 - width/3/2 - 100 && mouseX < width*2/3 - width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50 ){
+    fill(255);
     rect(width*2/3 - width/3/2 - 120 ,height/1.7 - 20  ,240,90);
+    fill(0);
     textSize(35);
     textAlign(CENTER, CENTER);
-    text("Medium",width*2/3 - width/3/2 - 120 ,height/1.7 - 20  ,240,90);
-    
+    text("Medium",width*2/3 - width/3/2 - 120 ,height/1.7 - 20  ,240,90); 
   }
 
   //Hard Pop-up Button
   if (mouseX > width - width/3/2 - 100 && mouseX < width - width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50 ){
+    fill(255);
     rect(width - width/3/2 - 120 ,height/1.7 - 20  ,240,90);
+    fill(0);
     textSize(35);
     textAlign(CENTER, CENTER);
     text("Hard",width - width/3/2 - 120 ,height/1.7 - 20  ,240,90);
+  }
+}
+
+function EndGameButton(){
+  fill(255);
+  rect(width/2 -100,height/2 + 50,200,50);
+  fill(0);
+  textSize(25);
+  textAlign(CENTER, CENTER);
+  text("Main Menu", width/2 -100, height/2 + 50,200,50);
+
+  if (mouseX > width/2 -100 && mouseX < width/2 + 100 && mouseY > height/2 + 50 && mouseY < height/2 + 100){
+    fill(255);
+   
+    rect(width/2 - 120,height/2 + 30,240,90);
+    fill(0);
+    textSize(35);
+    textAlign(CENTER, CENTER);
+    text("Main Menu",width/2 - 120,height/2 + 30,240,90);
+  }
+
+  fill(255);
+  rect(width/2 -100, height/2 + 180 ,200,50);
+  fill(0);
+  textSize(25);
+  textAlign(CENTER, CENTER);
+  text("Try Again", width/2 -100, height/2 + 180,200,50);
+
+  if (mouseX > width/2 -100 && mouseX < width/2 + 100 && mouseY > height/2 + 180 && mouseY < height/2 + 230){
+    fill(255);
+    rect(width/2 - 120, height/2 + 160,240,90);
+    fill(0);
+    textSize(35);
+    textAlign(CENTER, CENTER);
+    text("Try Again",width/2 - 120, height/2 + 160,240,90);
   }
 }
 
@@ -115,6 +164,9 @@ function setUpGrid(){
   grid = placemine(GRIDSIZE);  //grid for which square has mine
 }
 
+// function allMine(){
+//   text(totalMine, 200, 200, 200,200);
+// }
 
 // determine which side of the mouse is clicked
 function mousePressed() {
@@ -124,14 +176,17 @@ function mousePressed() {
   if(state === "mainMenu"){
     if (mouseButton === LEFT && mouseX > width/3/2 - 100 && mouseX < width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50){
       state = "easy"; 
+      mode = "easy";
       timesRun = 0;
     }
     if (mouseButton === LEFT && mouseX > width*2/3 - width/3/2 - 100 && mouseX < width*2/3 - width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50 ){
       state = "medium";  
+      mode = "medium";
       timesRun = 0;
     }
     if (mouseButton === LEFT && mouseX > width - width/3/2 - 100 && mouseX < width - width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50){
       state = "hard";  
+      mode = "hard";
       timesRun = 0;
     }
   }
@@ -143,6 +198,17 @@ function mousePressed() {
     }
     else if (mouseButton === RIGHT){
       flagBomb(spaceX , spaceY);
+    }
+  }
+
+  else if (state === "gameOver"){
+    if (mouseButton === LEFT && mouseX > width/2 -100 && mouseX < width/2 + 100 && mouseY > height/2 + 50 && mouseY < height/2 + 100){
+      state = "mainMenu";
+    }
+    
+    if (mouseButton === LEFT && mouseX > width/2 -100 && mouseX < width/2 + 100 && mouseY > height/2 + 180 && mouseY < height/2 + 230){
+      state = mode;
+      timesRun = 0;
     }
   }
   
@@ -186,12 +252,14 @@ function flagBomb(spaceX, spaceY) {
 // select which square is a mine at random 
 function placemine(){
   let grid = [];
+  totalMine = 0;
   for (let y=0; y<GRIDSIZE; y++) {
     grid.push([]);
     for (let x=0; x<GRIDSIZE; x++) {
       
       if (random(100) < chanceOfHavingMine) {
         grid[y].push(new Square(true));
+        totalMine = totalMine + 1;
       }
       else {
         grid[y].push(new Square(false));
@@ -373,30 +441,10 @@ function checkWin(){
       }
     }
     if (gameOver === GRIDSIZE * GRIDSIZE - mineTotal){
-      //you win word
+    
+      state = "gameOver" ;
       
-      rect(width/2 -100,height/2 + 50,200,50);
-      textSize(25);
-      textAlign(CENTER, CENTER);
-      text("Try Again", width/2 -100, height/2 + 50,200,50);
-      // if (mouseX > width/2 - 100 && mouseX < width/2 + 100 && mouseY < height/2 + 50 && mouseY < height/2 + 100){
-      //   rect(width/2 -120,height/2 + 30,240,90);
-      //   textSize(35);
-      //   textAlign(CENTER, CENTER);
-      //   text("Try Again",width/2 -120,height/2 + 30,240,90);
-      // }
-
-      // rect(width/2 -100,height/2 + 160,200,50);
-      // textSize(25);
-      // textAlign(CENTER, CENTER);
-      // text("Main Menu",width/2 -100,height/2 + 160,200,50);
-      // if (mouseX > width/2 - 100 && mouseX < width/2 + 100 && mouseY < height/2 + 160 && mouseY < height/2 + 210){
-      //   rect(width/2 -120,height/2 + 140,240,90);
-      //   textSize(35);
-      //   textAlign(CENTER, CENTER);
-      //   text("Main Menu",width/2 -120,height/2 + 140,240,90);
-      // }
-    }
+    }  
   }
 }
 
@@ -412,7 +460,9 @@ function gameover(){
         }
       }
     }
+    state = "gameOver";
   }
+  
 }
 
 class Square{

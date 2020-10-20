@@ -33,6 +33,7 @@ function draw() {
       showMap();
     }
     displayGrid();
+    allMine();
     gameover();
     checkWin();
     timesRun = timesRun + 1;
@@ -164,9 +165,14 @@ function setUpGrid(){
   grid = placemine(GRIDSIZE);  //grid for which square has mine
 }
 
-// function allMine(){
-//   text(totalMine, 200, 200, 200,200);
-// }
+
+function allMine(){
+  fill(255);
+  rect(width - 150 ,height/10,100,50);
+  fill(0);
+  textSize(35);
+  text(totalMine, width - 150,height/10,100,50);
+}
 
 // determine which side of the mouse is clicked
 function mousePressed() {
@@ -197,7 +203,10 @@ function mousePressed() {
 
     }
     else if (mouseButton === RIGHT){
+    
       flagBomb(spaceX , spaceY);
+    
+      
     }
   }
 
@@ -235,14 +244,17 @@ function flagBomb(spaceX, spaceY) {
   if (spaceX >= 0 && spaceX < GRIDSIZE && spaceY >= 0 && spaceY < GRIDSIZE) {
     
     if (grid[spaceY][spaceX].status === "Not Clicked" && grid[spaceY][spaceX].flag === false) {
-     
-      grid[spaceY][spaceX].flag = true;
+      if(totalMine>0){
+        grid[spaceY][spaceX].flag = true;
+        totalMine = totalMine - 1;
       
+      }
     }
     
     else if (grid[spaceY][spaceX].flag === true){
       
       grid[spaceY][spaceX].flag = false;
+      totalMine = totalMine + 1;
     }
   }
   

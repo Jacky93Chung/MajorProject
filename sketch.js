@@ -14,6 +14,16 @@ let chanceOfHavingMine;  //set the chance of having a mine
 let state ="mainMenu"; 
 let mode;
 let totalMine;
+let backgroundImage;
+let mineMainMenu;
+let timeWhenBlown;
+let runCount;
+
+
+function preload() {
+  backgroundImage = loadImage("assets/background.jpg");
+  mineMainMenu = loadImage("assets/Mine.png");
+}
 
 // sets up the game
 function setup() {
@@ -21,29 +31,40 @@ function setup() {
   document.addEventListener("contextmenu", event => event.preventDefault());
 }
 
+
 //shows functions on the page
 function draw() {
   background(220);
+  image(backgroundImage,0,0,width,height);
+  // image(mineMainMenu,mouseX,mouseY, 20,20);
   if (state === "mainMenu"){
     userChooseLevel();
   }
-  if (state ==="easy"|| state === "medium" || state === "hard" || state === "blowAllMine"){
+  if (state ==="easy"|| state === "medium" || state === "hard" || state === "blowAllMine" || state === "gameOver"){
     if (timesRun === 0){
       setUpGrid();
       showMap();
     }
     displayGrid();
     allMine();
-    gameover();
     checkWin();
     timesRun = timesRun + 1;
+  }
+  if (state === "blowAllMine"){
+    gameover();
   }
 
   if (state === "gameOver"){
     EndGameButton();
+    gameover();
   }
 }
 
+// let startTime;
+// function timer(){
+//   millis();
+//   startTime = 
+// }
 
 function userChooseLevel() {
 
@@ -184,16 +205,19 @@ function mousePressed() {
       state = "easy"; 
       mode = "easy";
       timesRun = 0;
+      runCount = 0;
     }
     if (mouseButton === LEFT && mouseX > width*2/3 - width/3/2 - 100 && mouseX < width*2/3 - width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50 ){
       state = "medium";  
       mode = "medium";
       timesRun = 0;
+      runCount = 0;
     }
     if (mouseButton === LEFT && mouseX > width - width/3/2 - 100 && mouseX < width - width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50){
       state = "hard";  
       mode = "hard";
       timesRun = 0;
+      runCount = 0;
     }
   }
 
@@ -389,8 +413,6 @@ function showMap(){
   
 
 
- 
-
 
 //"signal Center of the Grid" Control all color on grid
 function displayGrid() {
@@ -418,10 +440,18 @@ function displayGrid() {
       
       // change square to red if bomb
       else if (grid[y][x].status === "blow up"){
+        
         fill("red");
         rect(x*cellSize + windowWidth/2 - cellSize*(GRIDSIZE/2), y*cellSize+ windowHeight/2 - cellSize*(GRIDSIZE/2), cellSize, cellSize);
-        state = "blowAllMine";
+        if (runCount === 0){
+          timeWhenBlown = millis();
+          runCount = runCount +1;
+          state = "blowAllMine";
+        }
+        
       }
+
+      
       
       // All squares are green when untouched
       else{
@@ -460,19 +490,23 @@ function checkWin(){
   }
 }
 
-
 // if bomb is pressed, find all other bomb automactically and explode them
 function gameover(){
-  if (state === "blowAllMine"){
-    for (let y = 0; y<GRIDSIZE; y++) {
-      for (let x= 0; x<GRIDSIZE; x++) {
-        if( grid[y][x].isMine === true ){
-          fill("red");
-          rect(x*cellSize + windowWidth/2 - cellSize*(GRIDSIZE/2), y*cellSize+ windowHeight/2 - cellSize*(GRIDSIZE/2), cellSize, cellSize);
-        }
+  
+    
+  for (let y = 0; y<GRIDSIZE; y++) {
+    for (let x= 0; x<GRIDSIZE; x++) {
+      if( grid[y][x].isMine === true ){
+        fill("red");
+        rect(x*cellSize + windowWidth/2 - cellSize*(GRIDSIZE/2), y*cellSize+ windowHeight/2 - cellSize*(GRIDSIZE/2), cellSize, cellSize);
       }
     }
+  }
+  let timeSwitch = 2000;
+  if (millis() >= timeSwitch + timeWhenBlown){
     state = "gameOver";
+  
+    
   }
   
 }

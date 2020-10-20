@@ -22,7 +22,7 @@ My project is MineSweeper - A classic window desktop game. In this project, I ho
 
 - Make the 2 2D-array into 1 with object
 
-- Detect user won when all non-mine squares are clicked
+- Detect the user has won when all non-mine squares are clicked
 
 - A timer to caculate how long it takes user to finish
 
@@ -40,6 +40,10 @@ My project is MineSweeper - A classic window desktop game. In this project, I ho
 
 - Leaderboard for each different difficulty level
 
+- Setting
+    - Instruction
+    - Leave Game
+    - Hints
 - Coins Currency
     - Getting Coins when the user finishes a level
     - Buy different themes with coins

@@ -19,6 +19,8 @@ let flagImage;
 let timeWhenBlown;
 let runCount;
 let beginTime;
+let timeOnTimer;
+let userFinishTime;
 
 
 function preload() {
@@ -63,6 +65,7 @@ function draw() {
   }
   if (state === "userWin"){
     displayGrid();
+    userTime();
     EndGameButton();
   }
 }
@@ -249,6 +252,7 @@ function mousePressed() {
     }
     
     if (mouseButton === LEFT && mouseX > width/2 -100 && mouseX < width/2 + 100 && mouseY > height/2 + 180 && mouseY < height/2 + 230){
+      beginTime = millis();
       state = mode;
       timesRun = 0;
     }
@@ -257,7 +261,7 @@ function mousePressed() {
 }
 
 function timer(){
-  let timeOnTimer = millis() - beginTime;
+  timeOnTimer = millis() - beginTime;
   text(ceil(timeOnTimer/1000)- 1,200,200,150,150);
 }
 
@@ -426,7 +430,6 @@ function showMap(){
   
 
 
-
 //"signal Center of the Grid" Control all color on grid
 function displayGrid() {
   for (let y = 0; y<GRIDSIZE; y++) {
@@ -493,11 +496,18 @@ function checkWin(){
       }
     }
     if (gameOver === GRIDSIZE * GRIDSIZE - mineTotal){
-    
       state = "userWin" ;
       
     }  
   }
+}
+
+function userTime(){
+  if (runCount === 0){
+    userFinishTime = timeOnTimer;
+    runCount = runCount+ 1;
+  }
+  text(ceil(userFinishTime/1000),200,200,200,200);
 }
 
 // if bomb is pressed, find all other bomb automactically and explode them

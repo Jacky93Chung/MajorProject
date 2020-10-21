@@ -507,13 +507,14 @@ function userTime(){
     userFinishTime = timeOnTimer;
     runCount = runCount+ 1;
   }
-  text(ceil(userFinishTime/1000),200,200,200,200);
+  fill("black");
+  console.log(width/20,height/15);
+  textSize(40);
+  text(ceil(userFinishTime/1000),width/10,height/15,50,50);
 }
 
 // if bomb is pressed, find all other bomb automactically and explode them
 function gameover(){
-  
-    
   for (let y = 0; y<GRIDSIZE; y++) {
     for (let x= 0; x<GRIDSIZE; x++) {
       if( grid[y][x].isMine === true ){
@@ -522,10 +523,7 @@ function gameover(){
       }
     }
   }
-  
   state = "gameOver";
- 
-  
 }
 
 class Square{

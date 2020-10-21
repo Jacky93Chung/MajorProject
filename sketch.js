@@ -15,14 +15,15 @@ let state ="mainMenu";
 let mode;
 let totalMine;
 let backgroundImage;
-let mineMainMenu;
+let flagImage;
 let timeWhenBlown;
 let runCount;
+let beginTime;
 
 
 function preload() {
   backgroundImage = loadImage("assets/background.jpg");
-  mineMainMenu = loadImage("assets/Mine.png");
+  flagImage = loadImage("assets/flag.png");
 }
 
 // sets up the game
@@ -36,27 +37,33 @@ function setup() {
 function draw() {
   background(220);
   image(backgroundImage,0,0,width,height);
-  // image(mineMainMenu,mouseX,mouseY, 20,20);
   if (state === "mainMenu"){
     userChooseLevel();
   }
-  if (state ==="easy"|| state === "medium" || state === "hard" || state === "blowAllMine" || state === "gameOver"){
+  if (state ==="easy"|| state === "medium" || state === "hard" || state === "blowAllMine"){
     if (timesRun === 0){
       setUpGrid();
       showMap();
     }
+    timer();
     displayGrid();
     allMine();
     checkWin();
     timesRun = timesRun + 1;
   }
   if (state === "blowAllMine"){
+    
     gameover();
   }
 
   if (state === "gameOver"){
-    EndGameButton();
+    displayGrid();
     gameover();
+    EndGameButton();
+  }
+  if (state === "userWin"){
+    displayGrid();
+    EndGameButton();
   }
 }
 
@@ -188,11 +195,10 @@ function setUpGrid(){
 
 
 function allMine(){
-  fill(255);
-  rect(width - 150 ,height/10,100,50);
   fill(0);
   textSize(35);
-  text(totalMine, width - 150,height/10,100,50);
+  text(totalMine, width*9.3/10,height/10,width/20,height/15);
+  image(flagImage,width*9.3/10 - 60 ,height/10,width/25  ,height/15);
 }
 
 // determine which side of the mouse is clicked
@@ -206,18 +212,21 @@ function mousePressed() {
       mode = "easy";
       timesRun = 0;
       runCount = 0;
+      beginTime = millis();
     }
     if (mouseButton === LEFT && mouseX > width*2/3 - width/3/2 - 100 && mouseX < width*2/3 - width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50 ){
       state = "medium";  
       mode = "medium";
       timesRun = 0;
       runCount = 0;
+      beginTime = millis();
     }
     if (mouseButton === LEFT && mouseX > width - width/3/2 - 100 && mouseX < width - width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50){
       state = "hard";  
       mode = "hard";
       timesRun = 0;
       runCount = 0;
+      beginTime = millis();
     }
   }
 
@@ -234,7 +243,7 @@ function mousePressed() {
     }
   }
 
-  else if (state === "gameOver"){
+  else if (state === "gameOver" || state === "userWin"){
     if (mouseButton === LEFT && mouseX > width/2 -100 && mouseX < width/2 + 100 && mouseY > height/2 + 50 && mouseY < height/2 + 100){
       state = "mainMenu";
     }
@@ -247,6 +256,10 @@ function mousePressed() {
   
 }
 
+function timer(){
+  let timeOnTimer = millis() - beginTime;
+  text(ceil(timeOnTimer/1000)- 1,200,200,150,150);
+}
 
 //when left mouse is clicked, send signal that player decides to dig this square
 function digBomb(spaceX, spaceY) {
@@ -443,11 +456,8 @@ function displayGrid() {
         
         fill("red");
         rect(x*cellSize + windowWidth/2 - cellSize*(GRIDSIZE/2), y*cellSize+ windowHeight/2 - cellSize*(GRIDSIZE/2), cellSize, cellSize);
-        if (runCount === 0){
-          timeWhenBlown = millis();
-          runCount = runCount +1;
-          state = "blowAllMine";
-        }
+        state = "blowAllMine";
+        
         
       }
 
@@ -484,7 +494,7 @@ function checkWin(){
     }
     if (gameOver === GRIDSIZE * GRIDSIZE - mineTotal){
     
-      state = "gameOver" ;
+      state = "userWin" ;
       
     }  
   }
@@ -502,12 +512,9 @@ function gameover(){
       }
     }
   }
-  let timeSwitch = 2000;
-  if (millis() >= timeSwitch + timeWhenBlown){
-    state = "gameOver";
   
-    
-  }
+  state = "gameOver";
+ 
   
 }
 

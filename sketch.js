@@ -14,18 +14,28 @@ let chanceOfHavingMine;  //set the chance of having a mine
 let state ="mainMenu"; 
 let mode;
 let totalMine;
-let backgroundImage;
-let flagImage;
 let timeWhenBlown;
 let runCount;
 let beginTime;
 let timeOnTimer;
 let userFinishTime;
-
+//Images
+let backgroundImage;
+let flagImage;
+let mineImage;
+let wordImage;
+let titleMineImage;
+let timerImage;
+let exitImage;
 
 function preload() {
   backgroundImage = loadImage("assets/background.jpg");
   flagImage = loadImage("assets/flag.png");
+  mineImage = loadImage("assets/spike.png");
+  wordImage = loadImage("assets/word.png");
+  titleMineImage = loadImage("assets/titlemine.png");
+  timerImage = loadImage ("assets/timer.png");
+  exitImage = loadImage("assets/exit.png");
 }
 
 // sets up the game
@@ -40,7 +50,11 @@ function draw() {
   background(220);
   image(backgroundImage,0,0,width,height);
   if (state === "mainMenu"){
+    image(wordImage,width/2 -(width*2/5)/2, height/4,width*2/5, height/4);
+    image(titleMineImage,width/3 -height/3.5, height/4,height/5, height/5);
+    image(titleMineImage,width/2 + height/2.18, height/4,height/5, height/5);
     userChooseLevel();
+    setting();
   }
   if (state ==="easy"|| state === "medium" || state === "hard" || state === "blowAllMine"){
     if (timesRun === 0){
@@ -52,6 +66,7 @@ function draw() {
     allMine();
     checkWin();
     timesRun = timesRun + 1;
+    setting();
   }
   if (state === "blowAllMine"){
     
@@ -136,36 +151,36 @@ function userChooseLevel() {
 
 function EndGameButton(){
   fill(255);
-  rect(width/2 -100,height/2 + 50,200,50);
+  rect(width*19/24,height/2 + 50,200,50);
   fill(0);
   textSize(25);
   textAlign(CENTER, CENTER);
-  text("Main Menu", width/2 -100, height/2 + 50,200,50);
+  text("Main Menu", width*19/24, height/2 + 50,200,50);
 
-  if (mouseX > width/2 -100 && mouseX < width/2 + 100 && mouseY > height/2 + 50 && mouseY < height/2 + 100){
+  if (mouseX > width*19/24 && mouseX < width*19/24 + 200 && mouseY > height/2 + 50 && mouseY < height/2 + 100){
     fill(255);
    
-    rect(width/2 - 120,height/2 + 30,240,90);
+    rect(width*19/24 - 20,height/2 + 30,240,90);
     fill(0);
     textSize(35);
     textAlign(CENTER, CENTER);
-    text("Main Menu",width/2 - 120,height/2 + 30,240,90);
+    text("Main Menu",width*19/24 - 20,height/2 + 30,240,90);
   }
 
   fill(255);
-  rect(width/2 -100, height/2 + 180 ,200,50);
+  rect(width*19/24, height/2 + 180 ,200,50);
   fill(0);
   textSize(25);
   textAlign(CENTER, CENTER);
-  text("Try Again", width/2 -100, height/2 + 180,200,50);
+  text("Try Again", width*19/24, height/2 + 180,200,50);
 
-  if (mouseX > width/2 -100 && mouseX < width/2 + 100 && mouseY > height/2 + 180 && mouseY < height/2 + 230){
+  if (mouseX > width*19/24 && mouseX < width*19/24 + 200 && mouseY > height/2 + 180 && mouseY < height/2 + 230){
     fill(255);
-    rect(width/2 - 120, height/2 + 160,240,90);
+    rect(width*19/24 - 20, height/2 + 160,240,90);
     fill(0);
     textSize(35);
     textAlign(CENTER, CENTER);
-    text("Try Again",width/2 - 120, height/2 + 160,240,90);
+    text("Try Again",width*19/24 - 20 , height/2 + 160,240,90);
   }
 }
 
@@ -201,11 +216,12 @@ function allMine(){
   fill(0);
   textSize(35);
   text(totalMine, width*9.3/10,height/10,width/20,height/15);
-  image(flagImage,width*9.3/10 - 60 ,height/10,width/25  ,height/15);
+  image(flagImage,width*9.3/10 - 60 ,height/10,width/25,height/15);
 }
 
 // determine which side of the mouse is clicked
 function mousePressed() {
+ 
   let spaceX = floor((mouseX - (width/2- cellSize*(GRIDSIZE/2)))/cellSize);
   let spaceY = floor((mouseY  - (height/2- cellSize*(GRIDSIZE/2)))/cellSize);
   
@@ -234,7 +250,10 @@ function mousePressed() {
   }
 
   else if (state === "easy"|| state ==="medium"|| state ==="hard"){
-    if (mouseButton === LEFT){
+    if (mouseButton === LEFT && mouseX > width/15 && mouseX< width/15 + 30 &&  mouseY>height*9/10 && mouseY < height*9/10+ 30 ){
+      state = "mainMenu";
+    }
+    else if (mouseButton === LEFT){
       digBomb(spaceX,spaceY);
 
     }
@@ -244,14 +263,16 @@ function mousePressed() {
     
       
     }
+    
+    
   }
 
   else if (state === "gameOver" || state === "userWin"){
-    if (mouseButton === LEFT && mouseX > width/2 -100 && mouseX < width/2 + 100 && mouseY > height/2 + 50 && mouseY < height/2 + 100){
+    if (mouseButton === LEFT && mouseX > width*19/24 && mouseX < width*19/24 + 200 && mouseY > height/2 + 50 && mouseY < height/2 + 100){
       state = "mainMenu";
     }
     
-    if (mouseButton === LEFT && mouseX > width/2 -100 && mouseX < width/2 + 100 && mouseY > height/2 + 180 && mouseY < height/2 + 230){
+    if (mouseButton === LEFT && mouseX > width*19/24 && mouseX < width*19/24 + 200 && mouseY > height/2 + 180 && mouseY < height/2 + 230){
       beginTime = millis();
       state = mode;
       timesRun = 0;
@@ -262,7 +283,8 @@ function mousePressed() {
 
 function timer(){
   timeOnTimer = millis() - beginTime;
-  text(ceil(timeOnTimer/1000)- 1,200,200,150,150);
+  text(ceil(timeOnTimer/1000)- 1,width/10 + 60,height/10 +5,50,50);
+  image(timerImage,width/10,height/10,50,50);
 }
 
 //when left mouse is clicked, send signal that player decides to dig this square
@@ -275,13 +297,13 @@ function digBomb(spaceX, spaceY) {
     }
     
     else if (grid[spaceY][spaceX].isMine === true && grid[spaceY][spaceX].status === "Not Clicked" && grid[spaceY][spaceX].flag === false) {
-      grid[spaceY][spaceX].status = "blow up";
-    }
-  }
-}
-
-//when right mouse is clicked, sends signal that this square should be flagged
-function flagBomb(spaceX, spaceY) {
+      grid[spaceY][spaceX].status  = "blow up";
+    } 
+  } 
+} 
+ 
+//when right mouse is clicked, se nds signal that this square should be flagged
+function flagBomb(spaceX, spaceY)  {
   if (spaceX >= 0 && spaceX < GRIDSIZE && spaceY >= 0 && spaceY < GRIDSIZE) {
     
     if (grid[spaceY][spaceX].status === "Not Clicked" && grid[spaceY][spaceX].flag === false) {
@@ -427,7 +449,12 @@ function showMap(){
   }
 }
 
-  
+function setting(){
+  if (state === "easy" || state === "medium" || state === "hard") {
+    image(exitImage,width/15, height*9/10,30,30);
+  }
+
+}
 
 
 //"signal Center of the Grid" Control all color on grid
@@ -452,6 +479,7 @@ function displayGrid() {
       else if (grid[y][x].flag === true ){
         fill("orange");
         rect(x*cellSize + windowWidth/2 - cellSize*(GRIDSIZE/2), y*cellSize+ windowHeight/2 - cellSize*(GRIDSIZE/2), cellSize, cellSize);
+        image(flagImage,x*cellSize + windowWidth/2 - cellSize*(GRIDSIZE/2), y*cellSize+ windowHeight/2 - cellSize*(GRIDSIZE/2), cellSize, cellSize);
       }
       
       // change square to red if bomb
@@ -459,6 +487,7 @@ function displayGrid() {
         
         fill("red");
         rect(x*cellSize + windowWidth/2 - cellSize*(GRIDSIZE/2), y*cellSize+ windowHeight/2 - cellSize*(GRIDSIZE/2), cellSize, cellSize);
+        image(mineImage,x*cellSize + windowWidth/2 - cellSize*(GRIDSIZE/2), y*cellSize+ windowHeight/2 - cellSize*(GRIDSIZE/2), cellSize, cellSize);
         state = "blowAllMine";
         
         
@@ -510,7 +539,9 @@ function userTime(){
   fill("black");
   console.log(width/20,height/15);
   textSize(40);
-  text(ceil(userFinishTime/1000),width/10,height/15,50,50);
+  text(ceil(userFinishTime/1000),width/10 + 60,height/10 +5,50,50);
+  image(timerImage,width/10,height/10,50,50);
+  text("Your Time:" +" "+ ceil(userFinishTime/1000), width*1.3/10,height*7/10);
 }
 
 // if bomb is pressed, find all other bomb automactically and explode them
@@ -520,6 +551,7 @@ function gameover(){
       if( grid[y][x].isMine === true ){
         fill("red");
         rect(x*cellSize + windowWidth/2 - cellSize*(GRIDSIZE/2), y*cellSize+ windowHeight/2 - cellSize*(GRIDSIZE/2), cellSize, cellSize);
+        image(mineImage,x*cellSize + windowWidth/2 - cellSize*(GRIDSIZE/2), y*cellSize+ windowHeight/2 - cellSize*(GRIDSIZE/2), cellSize, cellSize);
       }
     }
   }

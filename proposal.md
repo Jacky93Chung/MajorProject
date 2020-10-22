@@ -44,6 +44,7 @@ My project is MineSweeper - A classic window desktop game. In this project, I ho
     - Instruction
     - Leave Game
     - Hints
+    
 - Coins Currency
     - Getting Coins when the user finishes a level
     - Buy different themes with coins

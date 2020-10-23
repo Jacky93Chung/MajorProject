@@ -32,13 +32,13 @@ My project is MineSweeper - A classic window desktop game. In this project, I ho
 
 - Creative Mode
     - Able to select whatever Grid Size the user wants
-    - Abel to select whatever Ratio of Bomb to No Bomb the user wants
+    - Able to select whatever Ratio of Bomb to No Bomb the user wants
 
 - Sound when mouse clicks
 
 - Make the Game display nicer
 
-- Leaderboard for each different difficulty level
+- Highscore for each different difficulty level
 
 - Setting
     - Instruction

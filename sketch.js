@@ -19,6 +19,9 @@ let runCount;
 let beginTime;
 let timeOnTimer;
 let userFinishTime;
+let highscoreE;
+let highscoreM;
+let highscoreH;
 //Images
 let backgroundImage;
 let flagImage;
@@ -42,6 +45,8 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight); 
   document.addEventListener("contextmenu", event => event.preventDefault());
+  highscoreE = getItem("easyHighScore");
+  
 }
 
 
@@ -50,7 +55,7 @@ function draw() {
   background(220);
   image(backgroundImage,0,0,width,height);
   if (state === "mainMenu"){
-    image(wordImage,width/2 -(width*2/5)/2, height/4,width*2/5, height/4);
+    image(wordImage,width/2 - width*2/5/2, height/4,width*2/5, height/4);
     image(titleMineImage,width/3 -height/3.5, height/4,height/5, height/5);
     image(titleMineImage,width/2 + height/2.18, height/4,height/5, height/5);
     userChooseLevel();
@@ -77,19 +82,15 @@ function draw() {
     displayGrid();
     gameover();
     EndGameButton();
+    feelsBad();
   }
   if (state === "userWin"){
     displayGrid();
     userTime();
     EndGameButton();
+    wellDone();
   }
 }
-
-// let startTime;
-// function timer(){
-//   millis();
-//   startTime = 
-// }
 
 function userChooseLevel() {
 
@@ -532,16 +533,64 @@ function checkWin(){
 }
 
 function userTime(){
+  
   if (runCount === 0){
     userFinishTime = timeOnTimer;
     runCount = runCount+ 1;
   }
   fill("black");
-  console.log(width/20,height/15);
   textSize(40);
   text(ceil(userFinishTime/1000),width/10 + 60,height/10 +5,50,50);
   image(timerImage,width/10,height/10,50,50);
   text("Your Time:" +" "+ ceil(userFinishTime/1000), width*1.3/10,height*7/10);
+  if (mode === "easy"){
+    if (highscoreE === null) {
+      highscoreE = ceil(userFinishTime/1000) ;
+    }
+    else if (ceil(userFinishTime/1000)< highscoreE){
+      storeItem("easyHighScore",ceil(userFinishTime/1000));
+    }
+    text("High Score:" +" "+ highscoreE, width*1.3/10,height*8/10);
+  }
+  if (mode === "medium"){
+    highscoreM = getItem("mediumHighScore");
+    if (highscoreM === null) {
+      highscoreM = ceil(userFinishTime/1000) ;
+    }
+    else if (ceil(userFinishTime/1000)< highscoreM){
+      storeItem("mediumHighScore",ceil(userFinishTime/1000));
+    }
+    text("High Score:" +" "+ highscoreM, width*1.3/10,height*8/10);
+  }
+  if (mode === "hard"){
+    highscoreH = getItem("hardHighScore");
+    if (highscoreH === null) {
+      highscoreH = ceil(userFinishTime/1000) ;
+    }
+    else if (ceil(userFinishTime/1000)< highscoreH){
+      storeItem("hardHighScore",ceil(userFinishTime/1000));
+    }
+    text("High Score:" +" "+ highscoreH, width*1.3/10,height*8/10);
+  }
+ 
+  
+  
+
+
+}
+
+function feelsBad(){
+  textSize(40);
+  text("So Close!",width*19/24 +100,height/3);
+  textSize(40);
+  text("Try Again!",width*19/24 +100,height*2/5);
+}
+
+function wellDone(){
+  textSize(40);
+  text("You Did It!",width*19/24 +100,height/3);
+  textSize(40);
+  text("Nice Work!",width*19/24 +100,height*2/5);
 }
 
 // if bomb is pressed, find all other bomb automactically and explode them

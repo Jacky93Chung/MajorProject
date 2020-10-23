@@ -19,6 +19,7 @@ let runCount;
 let beginTime;
 let timeOnTimer;
 let userFinishTime;
+let help = false;
 let highscoreE;
 let highscoreM;
 let highscoreH;
@@ -30,6 +31,8 @@ let wordImage;
 let titleMineImage;
 let timerImage;
 let exitImage;
+let helpImage;
+let crossImage;
 
 function preload() {
   backgroundImage = loadImage("assets/background.jpg");
@@ -39,6 +42,8 @@ function preload() {
   titleMineImage = loadImage("assets/titlemine.png");
   timerImage = loadImage ("assets/timer.png");
   exitImage = loadImage("assets/exit.png");
+  helpImage = loadImage("assets/information.png");
+  crossImage = loadImage("assets/cross.png");
 }
 
 // sets up the game
@@ -52,43 +57,53 @@ function setup() {
 
 //shows functions on the page
 function draw() {
-  background(220);
-  image(backgroundImage,0,0,width,height);
-  if (state === "mainMenu"){
-    image(wordImage,width/2 - width*2/5/2, height/4,width*2/5, height/4);
-    image(titleMineImage,width/3 -height/3.5, height/4,height/5, height/5);
-    image(titleMineImage,width/2 + height/2.18, height/4,height/5, height/5);
-    userChooseLevel();
-    setting();
+  if (help === true){
+    background(220);
+    image(backgroundImage,0,0,width,height); 
+    image(crossImage, width * 9.3/10, height *0.05,40,40);
+    textSize (40);
+    text("How to Play", width /2 - 20, height/10);
   }
-  if (state ==="easy"|| state === "medium" || state === "hard" || state === "blowAllMine"){
-    if (timesRun === 0){
-      setUpGrid();
-      showMap();
+  else {
+    background(220);
+    image(backgroundImage,0,0,width,height);
+    image(helpImage,width*0.5/15, height*9/10,30,30);
+    if (state === "mainMenu"){
+      image(wordImage,width/2 - width*2/5/2, height/4,width*2/5, height/4);
+      image(titleMineImage,width/3 -height/3.5, height/4,height/5, height/5);
+      image(titleMineImage,width/2 + height/2.18, height/4,height/5, height/5);
+      userChooseLevel();
+      setting();
     }
-    timer();
-    displayGrid();
-    allMine();
-    checkWin();
-    timesRun = timesRun + 1;
-    setting();
-  }
-  if (state === "blowAllMine"){
-    
-    gameover();
-  }
+    if (state ==="easy"|| state === "medium" || state === "hard" || state === "blowAllMine"){
+      if (timesRun === 0){
+        setUpGrid();
+        showMap();
+      }
+      timer();
+      displayGrid();
+      allMine();
+      checkWin();
+      timesRun = timesRun + 1;
+      setting();
+    }
+    if (state === "blowAllMine"){
+      
+      gameover();
+    }
 
-  if (state === "gameOver"){
-    displayGrid();
-    gameover();
-    EndGameButton();
-    feelsBad();
-  }
-  if (state === "userWin"){
-    displayGrid();
-    userTime();
-    EndGameButton();
-    wellDone();
+    if (state === "gameOver"){
+      displayGrid();
+      gameover();
+      EndGameButton();
+      feelsBad();
+    }
+    if (state === "userWin"){
+      displayGrid();
+      userTime();
+      EndGameButton();
+      wellDone();
+    }
   }
 }
 
@@ -222,64 +237,70 @@ function allMine(){
 
 // determine which side of the mouse is clicked
 function mousePressed() {
- 
-  let spaceX = floor((mouseX - (width/2- cellSize*(GRIDSIZE/2)))/cellSize);
-  let spaceY = floor((mouseY  - (height/2- cellSize*(GRIDSIZE/2)))/cellSize);
-  
-  if(state === "mainMenu"){
-    if (mouseButton === LEFT && mouseX > width/3/2 - 100 && mouseX < width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50){
-      state = "easy"; 
-      mode = "easy";
-      timesRun = 0;
-      runCount = 0;
-      beginTime = millis();
-    }
-    if (mouseButton === LEFT && mouseX > width*2/3 - width/3/2 - 100 && mouseX < width*2/3 - width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50 ){
-      state = "medium";  
-      mode = "medium";
-      timesRun = 0;
-      runCount = 0;
-      beginTime = millis();
-    }
-    if (mouseButton === LEFT && mouseX > width - width/3/2 - 100 && mouseX < width - width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50){
-      state = "hard";  
-      mode = "hard";
-      timesRun = 0;
-      runCount = 0;
-      beginTime = millis();
-    }
+  if (mouseX > width*0.5/15 && mouseX < width*0.5/15 + 30 && mouseY > height*9/10 && mouseY < height*9/10 + 30){
+    help = true;
   }
-
-  else if (state === "easy"|| state ==="medium"|| state ==="hard"){
-    if (mouseButton === LEFT && mouseX > width/15 && mouseX< width/15 + 30 &&  mouseY>height*9/10 && mouseY < height*9/10+ 30 ){
-      state = "mainMenu";
+  if (help === true && mouseX > width * 9.3/10 && mouseX < width * 9.3/10 + 40 && mouseY > height *0.05 && mouseY < height *0.05 + 40){
+    help = false;
+  }
+  if (help === false){
+    let spaceX = floor((mouseX - (width/2- cellSize*(GRIDSIZE/2)))/cellSize);
+    let spaceY = floor((mouseY  - (height/2- cellSize*(GRIDSIZE/2)))/cellSize);
+  
+    if(state === "mainMenu"){
+      if (mouseButton === LEFT && mouseX > width/3/2 - 100 && mouseX < width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50){
+        state = "easy"; 
+        mode = "easy";
+        timesRun = 0;
+        runCount = 0;
+        beginTime = millis();
+      }
+      if (mouseButton === LEFT && mouseX > width*2/3 - width/3/2 - 100 && mouseX < width*2/3 - width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50 ){
+        state = "medium";  
+        mode = "medium";
+        timesRun = 0;
+        runCount = 0;
+        beginTime = millis();
+      }
+      if (mouseButton === LEFT && mouseX > width - width/3/2 - 100 && mouseX < width - width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50){
+        state = "hard";  
+        mode = "hard";
+        timesRun = 0;
+        runCount = 0;
+        beginTime = millis();
+      }
     }
-    else if (mouseButton === LEFT){
-      digBomb(spaceX,spaceY);
 
-    }
-    else if (mouseButton === RIGHT){
+    else if (state === "easy"|| state ==="medium"|| state ==="hard"){
+      if (mouseButton === LEFT && mouseX > width/15 && mouseX< width/15 + 30 &&  mouseY>height*9/10 && mouseY < height*9/10+ 30 ){
+        state = "mainMenu";
+      }
+      else if (mouseButton === LEFT && mouseX > width*0.5/15 + 30){
+        digBomb(spaceX,spaceY);
+
+      }
+      else if (mouseButton === RIGHT){
     
-      flagBomb(spaceX , spaceY);
+        flagBomb(spaceX , spaceY);
     
       
+      }
+    
+    
     }
-    
-    
-  }
 
-  else if (state === "gameOver" || state === "userWin"){
-    if (mouseButton === LEFT && mouseX > width*19/24 && mouseX < width*19/24 + 200 && mouseY > height/2 + 50 && mouseY < height/2 + 100){
-      state = "mainMenu";
-    }
+    else if (state === "gameOver" || state === "userWin"){
+      if (mouseButton === LEFT && mouseX > width*19/24 && mouseX < width*19/24 + 200 && mouseY > height/2 + 50 && mouseY < height/2 + 100){
+        state = "mainMenu";
+      }
     
-    if (mouseButton === LEFT && mouseX > width*19/24 && mouseX < width*19/24 + 200 && mouseY > height/2 + 180 && mouseY < height/2 + 230){
-      beginTime = millis();
-      state = mode;
-      timesRun = 0;
+      if (mouseButton === LEFT && mouseX > width*19/24 && mouseX < width*19/24 + 200 && mouseY > height/2 + 180 && mouseY < height/2 + 230){
+        beginTime = millis();
+        state = mode;
+        timesRun = 0;
+      } 
     }
-  }
-  
+  } 
 }
 
 function timer(){
@@ -545,20 +566,25 @@ function userTime(){
   text("Your Time:" +" "+ ceil(userFinishTime/1000), width*1.3/10,height*7/10);
   if (mode === "easy"){
     if (highscoreE === null) {
-      highscoreE = ceil(userFinishTime/1000) ;
+      highscoreE = ceil(userFinishTime/1000);
+      text("New High Score!!",width*1.3/10,height*6/10);
     }
     else if (ceil(userFinishTime/1000)< highscoreE){
       storeItem("easyHighScore",ceil(userFinishTime/1000));
+      text("New High Score!!",width*1.3/10,height*6/10);
     }
     text("High Score:" +" "+ highscoreE, width*1.3/10,height*8/10);
+    
   }
   if (mode === "medium"){
     highscoreM = getItem("mediumHighScore");
     if (highscoreM === null) {
       highscoreM = ceil(userFinishTime/1000) ;
+      text("New High Score!!",width*1.3/10,height*6/10);
     }
     else if (ceil(userFinishTime/1000)< highscoreM){
       storeItem("mediumHighScore",ceil(userFinishTime/1000));
+      text("New High Score!!",width*1.3/10,height*6/10);
     }
     text("High Score:" +" "+ highscoreM, width*1.3/10,height*8/10);
   }
@@ -566,9 +592,11 @@ function userTime(){
     highscoreH = getItem("hardHighScore");
     if (highscoreH === null) {
       highscoreH = ceil(userFinishTime/1000) ;
+      text("New High Score!!",width*1.3/10,height*6/10);
     }
     else if (ceil(userFinishTime/1000)< highscoreH){
       storeItem("hardHighScore",ceil(userFinishTime/1000));
+      text("New High Score!!",width*1.3/10,height*6/10);
     }
     text("High Score:" +" "+ highscoreH, width*1.3/10,height*8/10);
   }

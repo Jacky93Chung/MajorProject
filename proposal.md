@@ -34,7 +34,7 @@ My project is MineSweeper - A classic window desktop game. In this project, I ho
     - Able to select whatever Grid Size the user wants
     - Able to select whatever Ratio of Bomb to No Bomb the user wants
 
-- Sound when mouse clicks
+- Sound when mouse digs a square
 
 - Make the Game display nicer
 
@@ -43,7 +43,6 @@ My project is MineSweeper - A classic window desktop game. In this project, I ho
 - Setting
     - Instruction
     - Leave Game
-    - Hints
     
 - Coins Currency
     - Getting Coins when the user finishes a level

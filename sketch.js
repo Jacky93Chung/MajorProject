@@ -11,19 +11,22 @@ let GRIDSIZE; // length x width of the grid
 let cellSize; //size of each little square
 let grid;  // the grid
 let chanceOfHavingMine;  //set the chance of having a mine
-let state = "mainMenu"; 
+let state = "mainMenu"; //determine which state
 let mode;
-let totalMine;
+let totalMine; 
 let timeWhenBlown;
 let runCount;
+//timer variables
 let beginTime;
-let timeOnTimer;
-let userFinishTime;
-let help = false;
-let highscoreE;
-let highscoreM;
-let highscoreH;
-let part;
+let timeOnTimer;  
+let userFinishTime;  
+let help = false; // help page variable
+let highscoreE;  //High score for easy mode
+let highscoreM;  //High score for medium mode
+let highscoreH; //High score for hard mode
+
+let part; //page variable for help tab
+
 //Images
 let backgroundImage;
 let flagImage;
@@ -38,7 +41,8 @@ let arrowImage;
 let arrow2Image;
 let bombSound;
 
-function preload() {
+
+function preload() {    //Preload Images/sounds
   backgroundImage = loadImage("assets/background.jpg");
   flagImage = loadImage("assets/flag.png");
   mineImage = loadImage("assets/spike.png");
@@ -72,13 +76,15 @@ function draw() {
     background(220);
     image(backgroundImage,0,0,width,height);
     image(helpImage,width*0.5/15, height*9/10,30,30);
+    //main menu mode
     if (state === "mainMenu"){
       image(wordImage,width/2 - width*2/5/2, height/4,width*2/5, height/4);
       image(titleMineImage,width/2 - width*2/5/2 - height/4, height/4,height/5, height/5);
       image(titleMineImage,width/2 - width*2/5/2 + width*2/5 + height/4 - height/5, height/4,height/5, height/5);
       userChooseLevel();
-      setting();
+      leave();
     }
+    //easy,medium,hard,blwallmine mode
     if (state ==="easy"|| state === "medium" || state === "hard" || state === "blowAllMine"){
       if (timesRun === 0){
         setUpGrid();
@@ -89,19 +95,21 @@ function draw() {
       allMine();
       checkWin();
       timesRun = timesRun + 1;
-      setting();
+      leave();
     }
+    //blow all mine mode
     if (state === "blowAllMine"){
       
       gameover();
     }
-
+    //user lose mode
     if (state === "gameOver"){
       displayGrid();
       gameover();
       EndGameButton();
       feelsBad();
     }
+    //user win mode
     if (state === "userWin"){
       displayGrid();
       userTime();
@@ -111,8 +119,9 @@ function draw() {
   }
 }
 
-function helpTab(){
-  if (part === 1){
+function helpTab(){    //the information tab
+  if (part === 1){     // help page 1
+  
   background(220);
   image(backgroundImage,0,0,width,height); 
   image(crossImage, width * 9.3/10, height *0.05,40,40);
@@ -125,28 +134,49 @@ function helpTab(){
   text("Step 3: Flag the ones that you think are bombs",width/2 - 20,height*5/10);
   text("Step 4: Clear all the safe squares to win",width/2 - 20,height*6/10);
   }
-  else if (part === 2){
+  else if (part === 2){      // help page 2
     background(220);
     image(backgroundImage,0,0,width,height); 
     image(crossImage, width * 9.3/10, height *0.05,40,40);
     image(arrow2Image, width *0.7/10, height/2 - 25,50,50);
     textSize (60);
     text("Help", width /2 - 20, height*1.5/10);
-    textSize(50);
+    textSize(40);
     textAlign(LEFT);
     text ("=   Normal",width*3.2/10,height*2.5/8);
-    text ("=   Safe" ,width*3.2/10,height*3.5/8);
-    text ("(The number shows the amount of mines around the square)");
-    text("=   Flagged",width*3.2/10,height*4.5/10);
-    text("=   Blown Up");
-    text("=   To Dig square");
-    text("=   To Flag Square")
+    text("=   Flagged",width*3.2/10,height*4.5/8);
+    text("=   Blown Up",width*3.2/10,height*3.5/8);
+    text("=   To Dig square",width*6.4/10,height*3/8);
+    text("=   To Flag Square",width*6.4/10,height*5/8);
+    text ("=   Safe" ,width*3.2/10,height*5.5/8);
+    textSize(30);
+    text ("(The number represents the amount of mines around the square)",width*1/10,height*6/8);
+    rectMode(CENTER);
+    fill("green");
+    rect(width*2.5/10,height*2.5/8,width/35,width/35);
+    fill("red");
+    rect(width*2.5/10,height*3.5/8,width/35,width/35);
+    imageMode(CENTER);
+    image(mineImage,width*2.5/10,height*3.5/8,width/35,width/35);
+    fill("yellow");
+    rect(width*2.5/10,height*4.5/8,width/35,width/35);
+    image(flagImage,width*2.5/10,height*4.5/8,width/35,width/35);
+    fill("white");
+    rect(width*2.5/10,height*5.5/8,width/35,width/35);
+    fill("black")
+    textSize(width/40);
+    textAlign(CENTER);
+    text("6",width*2.5/10,height*5.5/8);
+    fill("black");
+    imageMode(CORNER);
+    
+    rectMode(CORNER);
 
   }
 
 }
 
-function userChooseLevel() {
+function userChooseLevel() { //buttons for easy medium hard
 
   //Easy Button
   fill(255);
@@ -204,7 +234,8 @@ function userChooseLevel() {
   }
 }
 
-function EndGameButton(){
+function EndGameButton(){  //buttons for try again and main menu
+  //main menu button
   fill(255);
   rect(width*19/24,height/2 + 50,200,50);
   fill(0);
@@ -212,6 +243,7 @@ function EndGameButton(){
   textAlign(CENTER, CENTER);
   text("Main Menu", width*19/24, height/2 + 50,200,50);
 
+  //main menu pop-up button
   if (mouseX > width*19/24 && mouseX < width*19/24 + 200 && mouseY > height/2 + 50 && mouseY < height/2 + 100){
     fill(255);
    
@@ -221,7 +253,7 @@ function EndGameButton(){
     textAlign(CENTER, CENTER);
     text("Main Menu",width*19/24 - 20,height/2 + 30,240,90);
   }
-
+//try again button
   fill(255);
   rect(width*19/24, height/2 + 180 ,200,50);
   fill(0);
@@ -229,6 +261,7 @@ function EndGameButton(){
   textAlign(CENTER, CENTER);
   text("Try Again", width*19/24, height/2 + 180,200,50);
 
+  //try again pop-up button
   if (mouseX > width*19/24 && mouseX < width*19/24 + 200 && mouseY > height/2 + 180 && mouseY < height/2 + 230){
     fill(255);
     rect(width*19/24 - 20, height/2 + 160,240,90);
@@ -266,7 +299,7 @@ function setUpGrid(){
   grid = placemine(GRIDSIZE);  //grid for which square has mine
 }
 
-
+//determines total numbers of mine in the grid
 function allMine(){
   fill(0);
   textSize(35);
@@ -274,20 +307,23 @@ function allMine(){
   image(flagImage,width*9.3/10 - 60 ,height/10,width/25,height/15);
 }
 
-// determine which side of the mouse is clicked
+// determine mouse function is happening
 function mousePressed() {
+  //information button response
   if (mouseX > width*0.5/15 && mouseX < width*0.5/15 + 30 && mouseY > height*9/10 && mouseY < height*9/10 + 30){
     help = true;
     part = 1;
   }
+  //help tab change to page 2 response
   else if (part === 1 && help === true && mouseX > width *9.3/10 && mouseX< width *9.3/10 +50 && mouseY > height/2 -25 && mouseY < height + 25){
     part = 2;
   }
+  //help tab change back to page 1 response
   else if (part === 2 && help === true && mouseX > width*0.7/10 && mouseX < width*0.7/10 + 50 && mouseY > height/2 - 25 && mouseY < height/2 +25){
     part = 1;
   }
-
-  if (help === true && mouseX > width * 9.3/10 && mouseX < width * 9.3/10 + 40 && mouseY > height *0.05 && mouseY < height *0.05 + 40){
+  //help tab exit response
+  else if (help === true && mouseX > width * 9.3/10 && mouseX < width * 9.3/10 + 40 && mouseY > height *0.05 && mouseY < height *0.05 + 40){
     help = false;
   }
   if (help === false){
@@ -295,6 +331,7 @@ function mousePressed() {
     let spaceY = floor((mouseY  - (height/2- cellSize*(GRIDSIZE/2)))/cellSize);
   
     if(state === "mainMenu"){
+      //start timer sensor
       if (mouseButton === LEFT && mouseX > width/3/2 - 100 && mouseX < width/3/2 + 100 && mouseY > height/1.7 && mouseY < height/1.7 +50){
         state = "easy"; 
         mode = "easy";
@@ -319,15 +356,18 @@ function mousePressed() {
     }
 
     else if (state === "easy"|| state ==="medium"|| state ==="hard"){
+      //exit button response
       if (mouseButton === LEFT && mouseX > width/15 && mouseX< width/15 + 30 &&  mouseY>height*9/10 && mouseY < height*9/10+ 30 ){
         state = "mainMenu";
       }
+
+      //dig bomb response
       else if (mouseButton === LEFT && mouseX > width*0.5/15 + 30){
         digBomb(spaceX,spaceY);
 
       }
+      //flag bomb response
       else if (mouseButton === RIGHT){
-    
         flagBomb(spaceX , spaceY);
     
       
@@ -337,10 +377,11 @@ function mousePressed() {
     }
 
     else if (state === "gameOver" || state === "userWin"){
+      //main menu button response
       if (mouseButton === LEFT && mouseX > width*19/24 && mouseX < width*19/24 + 200 && mouseY > height/2 + 50 && mouseY < height/2 + 100){
         state = "mainMenu";
       }
-    
+      //try again button response
       if (mouseButton === LEFT && mouseX > width*19/24 && mouseX < width*19/24 + 200 && mouseY > height/2 + 180 && mouseY < height/2 + 230){
         beginTime = millis();
         state = mode;
@@ -349,7 +390,7 @@ function mousePressed() {
     }
   } 
 }
-
+//timer
 function timer(){
   timeOnTimer = millis() - beginTime;
   text(ceil(timeOnTimer/1000)- 1,width/10 + 60,height/10 +5,50,50);
@@ -378,15 +419,14 @@ function flagBomb(spaceX, spaceY)  {
     if (grid[spaceY][spaceX].status === "Not Clicked" && grid[spaceY][spaceX].flag === false) {
       if(totalMine>0){
         grid[spaceY][spaceX].flag = true;
-        totalMine = totalMine - 1;
+        totalMine = totalMine - 1; //total mine counter left goes down when flagged
       
       }
     }
     
     else if (grid[spaceY][spaceX].flag === true){
-      
       grid[spaceY][spaceX].flag = false;
-      totalMine = totalMine + 1;
+      totalMine = totalMine + 1; //total mine counter left goes back up when unflagged
     }
   }
   
@@ -518,13 +558,16 @@ function showMap(){
   }
 }
 
-function setting(){
+function bombsound(){
+  bombSound.play();
+}
+
+//door leave
+function leave(){
   if (state === "easy" || state === "medium" || state === "hard") {
     image(exitImage,width/15, height*9/10,30,30);
   }
-
 }
-
 
 //"signal Center of the Grid" Control all color on grid
 function displayGrid() {
@@ -553,11 +596,10 @@ function displayGrid() {
       
       // change square to red if bomb
       else if (grid[y][x].status === "blow up"){
-        
         fill("red");
         rect(x*cellSize + windowWidth/2 - cellSize*(GRIDSIZE/2), y*cellSize+ windowHeight/2 - cellSize*(GRIDSIZE/2), cellSize, cellSize);
         image(mineImage,x*cellSize + windowWidth/2 - cellSize*(GRIDSIZE/2), y*cellSize+ windowHeight/2 - cellSize*(GRIDSIZE/2), cellSize, cellSize);
-        bombSound.play();
+        
         state = "blowAllMine";
         
         
@@ -576,6 +618,7 @@ function displayGrid() {
   }
 }
 
+//check if the player has won(click all non-bomb square)
 function checkWin(){
   if (state === "easy"||state === "medium"||state === "hard"){
 
@@ -601,6 +644,7 @@ function checkWin(){
   }
 }
 
+//timer function
 function userTime(){
   
   if (runCount === 0){
@@ -612,6 +656,8 @@ function userTime(){
   text(ceil(userFinishTime/1000),width/10 + 60,height/10 +5,50,50);
   image(timerImage,width/10,height/10,50,50);
   text("Your Time:" +" "+ ceil(userFinishTime/1000), width*1.3/10,height*7/10);
+
+  //determine if the user beat the highscore or not for all modes
   if (mode === "easy"){
     if (highscoreE === null) {
       highscoreE = ceil(userFinishTime/1000);
@@ -648,20 +694,17 @@ function userTime(){
     }
     text("High Score:" +" "+ highscoreH, width*1.3/10,height*8/10);
   }
- 
-  
-  
-
 
 }
 
+//words pop-up when game is lost
 function feelsBad(){
   textSize(40);
   text("So Close!",width*19/24 +100,height/3);
   textSize(40);
   text("Try Again!",width*19/24 +100,height*2/5);
 }
-
+//words pop - up when game is won
 function wellDone(){
   textSize(40);
   text("You Did It!",width*19/24 +100,height/3);
@@ -677,12 +720,14 @@ function gameover(){
         fill("red");
         rect(x*cellSize + windowWidth/2 - cellSize*(GRIDSIZE/2), y*cellSize+ windowHeight/2 - cellSize*(GRIDSIZE/2), cellSize, cellSize);
         image(mineImage,x*cellSize + windowWidth/2 - cellSize*(GRIDSIZE/2), y*cellSize+ windowHeight/2 - cellSize*(GRIDSIZE/2), cellSize, cellSize);
+  
       }
     }
   }
   state = "gameOver";
 }
 
+//clase set up 
 class Square{
   constructor (isMine){
     this.isMine = isMine;

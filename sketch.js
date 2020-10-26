@@ -11,7 +11,7 @@ let GRIDSIZE; // length x width of the grid
 let cellSize; //size of each little square
 let grid;  // the grid
 let chanceOfHavingMine;  //set the chance of having a mine
-let state ="mainMenu"; 
+let state = "mainMenu"; 
 let mode;
 let totalMine;
 let timeWhenBlown;
@@ -23,6 +23,7 @@ let help = false;
 let highscoreE;
 let highscoreM;
 let highscoreH;
+let part;
 //Images
 let backgroundImage;
 let flagImage;
@@ -33,6 +34,9 @@ let timerImage;
 let exitImage;
 let helpImage;
 let crossImage;
+let arrowImage;
+let arrow2Image;
+let bombSound;
 
 function preload() {
   backgroundImage = loadImage("assets/background.jpg");
@@ -44,6 +48,10 @@ function preload() {
   exitImage = loadImage("assets/exit.png");
   helpImage = loadImage("assets/information.png");
   crossImage = loadImage("assets/cross.png");
+  arrowImage = loadImage("assets/arrow.png");
+  arrow2Image = loadImage("assets/arrow2.png");
+  soundFormats('mp3','ogg');
+  bombSound = loadSound("assets/bombsound.mp3");
 }
 
 // sets up the game
@@ -58,11 +66,7 @@ function setup() {
 //shows functions on the page
 function draw() {
   if (help === true){
-    background(220);
-    image(backgroundImage,0,0,width,height); 
-    image(crossImage, width * 9.3/10, height *0.05,40,40);
-    textSize (40);
-    text("How to Play", width /2 - 20, height/10);
+    helpTab();
   }
   else {
     background(220);
@@ -70,8 +74,8 @@ function draw() {
     image(helpImage,width*0.5/15, height*9/10,30,30);
     if (state === "mainMenu"){
       image(wordImage,width/2 - width*2/5/2, height/4,width*2/5, height/4);
-      image(titleMineImage,width/3 -height/3.5, height/4,height/5, height/5);
-      image(titleMineImage,width/2 + height/2.18, height/4,height/5, height/5);
+      image(titleMineImage,width/2 - width*2/5/2 - height/4, height/4,height/5, height/5);
+      image(titleMineImage,width/2 - width*2/5/2 + width*2/5 + height/4 - height/5, height/4,height/5, height/5);
       userChooseLevel();
       setting();
     }
@@ -105,6 +109,41 @@ function draw() {
       wellDone();
     }
   }
+}
+
+function helpTab(){
+  if (part === 1){
+  background(220);
+  image(backgroundImage,0,0,width,height); 
+  image(crossImage, width * 9.3/10, height *0.05,40,40);
+  image(arrowImage, width *9.3/10, height/2 - 25,50,50);
+  textSize (60);
+  text("How to Play", width /2 - 20, height*1.5/10);
+  textSize (40);
+  text("Step 1: Pick a random square",width/2 - 20,height*3/10);
+  text("Step 2: Try and find out which squares are safe",width/2 - 20,height*4/10);
+  text("Step 3: Flag the ones that you think are bombs",width/2 - 20,height*5/10);
+  text("Step 4: Clear all the safe squares to win",width/2 - 20,height*6/10);
+  }
+  else if (part === 2){
+    background(220);
+    image(backgroundImage,0,0,width,height); 
+    image(crossImage, width * 9.3/10, height *0.05,40,40);
+    image(arrow2Image, width *0.7/10, height/2 - 25,50,50);
+    textSize (60);
+    text("Help", width /2 - 20, height*1.5/10);
+    textSize(50);
+    textAlign(LEFT);
+    text ("=   Normal",width*3.2/10,height*2.5/8);
+    text ("=   Safe" ,width*3.2/10,height*3.5/8);
+    text ("(The number shows the amount of mines around the square)");
+    text("=   Flagged",width*3.2/10,height*4.5/10);
+    text("=   Blown Up");
+    text("=   To Dig square");
+    text("=   To Flag Square")
+
+  }
+
 }
 
 function userChooseLevel() {
@@ -239,7 +278,15 @@ function allMine(){
 function mousePressed() {
   if (mouseX > width*0.5/15 && mouseX < width*0.5/15 + 30 && mouseY > height*9/10 && mouseY < height*9/10 + 30){
     help = true;
+    part = 1;
   }
+  else if (part === 1 && help === true && mouseX > width *9.3/10 && mouseX< width *9.3/10 +50 && mouseY > height/2 -25 && mouseY < height + 25){
+    part = 2;
+  }
+  else if (part === 2 && help === true && mouseX > width*0.7/10 && mouseX < width*0.7/10 + 50 && mouseY > height/2 - 25 && mouseY < height/2 +25){
+    part = 1;
+  }
+
   if (help === true && mouseX > width * 9.3/10 && mouseX < width * 9.3/10 + 40 && mouseY > height *0.05 && mouseY < height *0.05 + 40){
     help = false;
   }
@@ -510,6 +557,7 @@ function displayGrid() {
         fill("red");
         rect(x*cellSize + windowWidth/2 - cellSize*(GRIDSIZE/2), y*cellSize+ windowHeight/2 - cellSize*(GRIDSIZE/2), cellSize, cellSize);
         image(mineImage,x*cellSize + windowWidth/2 - cellSize*(GRIDSIZE/2), y*cellSize+ windowHeight/2 - cellSize*(GRIDSIZE/2), cellSize, cellSize);
+        bombSound.play();
         state = "blowAllMine";
         
         

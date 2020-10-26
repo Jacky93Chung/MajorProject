@@ -599,7 +599,7 @@ function displayGrid() {
         fill("red");
         rect(x*cellSize + windowWidth/2 - cellSize*(GRIDSIZE/2), y*cellSize+ windowHeight/2 - cellSize*(GRIDSIZE/2), cellSize, cellSize);
         image(mineImage,x*cellSize + windowWidth/2 - cellSize*(GRIDSIZE/2), y*cellSize+ windowHeight/2 - cellSize*(GRIDSIZE/2), cellSize, cellSize);
-        
+        bombSound.play();
         state = "blowAllMine";
         
         

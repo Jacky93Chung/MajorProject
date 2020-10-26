@@ -16,6 +16,7 @@ let mode;
 let totalMine; 
 let timeWhenBlown;
 let runCount;
+
 //timer variables
 let beginTime;
 let timeOnTimer;  
@@ -111,6 +112,7 @@ function draw() {
     }
     //user win mode
     if (state === "userWin"){
+      
       displayGrid();
       userTime();
       EndGameButton();

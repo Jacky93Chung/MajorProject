@@ -5,6 +5,8 @@
 // Extra for Experts:
 // right click on mouse
 // have 2 different 2d array grid
+// Highscore local
+// The amount of time spent on this project outside of school
 
 let timesRun;
 let GRIDSIZE; // length x width of the grid
@@ -394,6 +396,7 @@ function mousePressed() {
         beginTime = millis();
         state = mode;
         timesRun = 0;
+        runCount = 0;
       } 
     }
   } 
@@ -664,19 +667,21 @@ function userTime(){
   text(ceil(userFinishTime/1000),width/10 + 60,height/10 +5,50,50);
   image(timerImage,width/10,height/10,50,50);
   text("Your Time:" +" "+ ceil(userFinishTime/1000), width*1.3/10,height*7/10);
-
-  //determine if the user beat the highscore or not for all modes
+  // determine if the user beat the highscore or not for all modes
   if (mode === "easy"){
     if (highscoreE === null) {
       highscoreE = ceil(userFinishTime/1000);
       text("New High Score!!",width*1.3/10,height*6/10);
+      storeItem("easyHighScore",ceil(userFinishTime/1000));
+       
     }
-    else if (ceil(userFinishTime/1000)< highscoreE){
+    else if (ceil(userFinishTime/1000) < highscoreE){
       storeItem("easyHighScore",ceil(userFinishTime/1000));
       text("New High Score!!",width*1.3/10,height*6/10);
     }
+ 
     text("High Score:" +" "+ highscoreE, width*1.3/10,height*8/10);
-    
+
   }
   if (mode === "medium"){
     highscoreM = getItem("mediumHighScore");
@@ -702,7 +707,8 @@ function userTime(){
     }
     text("High Score:" +" "+ highscoreH, width*1.3/10,height*8/10);
   }
-
+  
+  
 }
 
 //words pop-up when game is lost

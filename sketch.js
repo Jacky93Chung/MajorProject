@@ -41,6 +41,8 @@ let crossImage;
 let arrowImage;
 let arrow2Image;
 let bombSound;
+let mouseClickRightImage;
+let mouseClickLeftImage;
 
 
 function preload() {    //Preload Images/sounds
@@ -55,8 +57,10 @@ function preload() {    //Preload Images/sounds
   crossImage = loadImage("assets/cross.png");
   arrowImage = loadImage("assets/arrow.png");
   arrow2Image = loadImage("assets/arrow2.png");
-  soundFormats('mp3','ogg');
-  bombSound = loadSound("assets/bombsound.mp3");
+  mouseClickRightImage = loadImage("assets/mouseclick(right).png");
+  mouseClickLeftImage = loadImage("assets/mouseclick(left).png");
+  // soundFormats('mp3','ogg');
+  // bombSound = loadSound("assets/bombsound.mp3");
 }
 
 // sets up the game
@@ -155,18 +159,20 @@ function helpTab(){    //the information tab
     text ("(The number represents the amount of mines around the square)",width*1/10,height*6/8);
     rectMode(CENTER);
     fill("green");
-    rect(width*2.5/10,height*2.5/8,width/35,width/35);
+    rect(width*2.5/10,height*2.5/8,width/30,width/30);
     fill("red");
-    rect(width*2.5/10,height*3.5/8,width/35,width/35);
+    rect(width*2.5/10,height*3.5/8,width/30,width/30);
     imageMode(CENTER);
-    image(mineImage,width*2.5/10,height*3.5/8,width/35,width/35);
+    image(mineImage,width*2.5/10,height*3.5/8,width/30,width/30);
+    image(mouseClickRightImage,width*5.7/10,height*5/8,width/20,width/20);
+    image(mouseClickLeftImage,width*5.7/10,height*3/8,width/20,width/20);
     fill("yellow");
-    rect(width*2.5/10,height*4.5/8,width/35,width/35);
-    image(flagImage,width*2.5/10,height*4.5/8,width/35,width/35);
+    rect(width*2.5/10,height*4.5/8,width/30,width/30);
+    image(flagImage,width*2.5/10,height*4.5/8,width/30,width/30);
     fill("white");
-    rect(width*2.5/10,height*5.5/8,width/35,width/35);
+    rect(width*2.5/10,height*5.5/8,width/30,width/30);
     fill("black")
-    textSize(width/40);
+    textSize(width/35);
     textAlign(CENTER);
     text("6",width*2.5/10,height*5.5/8);
     fill("black");
@@ -560,9 +566,9 @@ function showMap(){
   }
 }
 
-function bombsound(){
-  bombSound.play();
-}
+// function bombsound(){
+//   bombSound.play();
+// }
 
 //door leave
 function leave(){
@@ -601,7 +607,7 @@ function displayGrid() {
         fill("red");
         rect(x*cellSize + windowWidth/2 - cellSize*(GRIDSIZE/2), y*cellSize+ windowHeight/2 - cellSize*(GRIDSIZE/2), cellSize, cellSize);
         image(mineImage,x*cellSize + windowWidth/2 - cellSize*(GRIDSIZE/2), y*cellSize+ windowHeight/2 - cellSize*(GRIDSIZE/2), cellSize, cellSize);
-        bombSound.play();
+        // bombSound.play();
         state = "blowAllMine";
         
         

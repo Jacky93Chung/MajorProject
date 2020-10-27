@@ -128,17 +128,17 @@ function draw() {
 function helpTab(){    //the information tab
   if (part === 1){     // help page 1
   
-  background(220);
-  image(backgroundImage,0,0,width,height); 
-  image(crossImage, width * 9.3/10, height *0.05,40,40);
-  image(arrowImage, width *9.3/10, height/2 - 25,50,50);
-  textSize (60);
-  text("How to Play", width /2 - 20, height*1.5/10);
-  textSize (40);
-  text("Step 1: Pick a random square",width/2 - 20,height*3/10);
-  text("Step 2: Try and find out which squares are safe",width/2 - 20,height*4/10);
-  text("Step 3: Flag the ones that you think are bombs",width/2 - 20,height*5/10);
-  text("Step 4: Clear all the safe squares to win",width/2 - 20,height*6/10);
+    background(220);
+    image(backgroundImage,0,0,width,height); 
+    image(crossImage, width * 9.3/10, height *0.05,40,40);
+    image(arrowImage, width *9.3/10, height/2 - 25,50,50);
+    textSize (60);
+    text("How to Play", width /2 - 20, height*1.5/10);
+    textSize (40);
+    text("Step 1: Pick a random square",width/2 - 20,height*3/10);
+    text("Step 2: Try and find out which squares are safe",width/2 - 20,height*4/10);
+    text("Step 3: Flag the ones that you think are bombs",width/2 - 20,height*5/10);
+    text("Step 4: Clear all the safe squares to win",width/2 - 20,height*6/10);
   }
   else if (part === 2){      // help page 2
     background(220);
@@ -171,7 +171,7 @@ function helpTab(){    //the information tab
     image(flagImage,width*2.5/10,height*4.5/8,width/30,width/30);
     fill("white");
     rect(width*2.5/10,height*5.5/8,width/30,width/30);
-    fill("black")
+    fill("black");
     textSize(width/35);
     textAlign(CENTER);
     text("6",width*2.5/10,height*5.5/8);
@@ -261,7 +261,7 @@ function EndGameButton(){  //buttons for try again and main menu
     textAlign(CENTER, CENTER);
     text("Main Menu",width*19/24 - 20,height/2 + 30,240,90);
   }
-//try again button
+  //try again button
   fill(255);
   rect(width*19/24, height/2 + 180 ,200,50);
   fill(0);

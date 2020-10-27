@@ -744,3 +744,5 @@ class Square{
     this.flag = false;
   }
 }
+
+//end
